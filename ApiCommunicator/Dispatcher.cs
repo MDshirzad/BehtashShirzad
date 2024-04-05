@@ -8,6 +8,8 @@ using SharedObjects.DTO;
 using Newtonsoft.Json;
 using System.Text;
 using ApiCommunicator.DTO.Mellipayamak;
+using Services;
+using ApiCommunicator.DTO.Response;
 
 namespace ApiCommunicator
 {
@@ -24,15 +26,26 @@ namespace ApiCommunicator
                 
                 using (var client = new HttpClient())
                 {
-                    var res = await client.PostAsync(Urls.MelliPayamakOtp, new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")) ;
+                    var res = await client.PostAsync(Urls.MelliPayamakOtp+ApiKeys.MelliPayamak, new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")) ;
                     if (res.IsSuccessStatusCode) {
                         var result  = await res.Content.ReadAsStringAsync();
-
-                        if (result.Contains("ارسال نشده"))   
+                         
+                      
+                        var parseJson = JsonConvert.DeserializeObject<OtpResponse>(result);
+                        if (parseJson.status.Equals("ارسال نشده"))   
                             return Status.NotSent;
-                        if (result.Contains("ارسال شده"))
+
+                        if (parseJson.status.Equals("ارسال شده") && parseJson.code is not null ) {
+                            
+                            using (var redis = new RedisCommunicator())
+                            {
+                                var ss = redis.AddValue(data.To, parseJson.code);
+ 
+                            }
+
+
                             return Status.SENT;
-                        
+                        }
 
 
                     }
@@ -50,6 +63,9 @@ namespace ApiCommunicator
             
 
         }
+
+
+
 
 
 
