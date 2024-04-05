@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BehtashShirzad.Migrations
 {
     [DbContext(typeof(DbCommiter))]
-    [Migration("20240405124023_BehtashStore")]
-    partial class BehtashStore
+    [Migration("20240405134753_Behtash")]
+    partial class Behtash
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,7 +62,8 @@ namespace BehtashShirzad.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
 
                     b.HasKey("Id");
 

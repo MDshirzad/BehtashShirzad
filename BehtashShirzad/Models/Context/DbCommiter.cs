@@ -17,7 +17,17 @@ namespace ElliotStore.Model.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
- 
+
+            var decimalProps = modelBuilder.Model
+   .GetEntityTypes()
+   .SelectMany(t => t.GetProperties())
+   .Where(p => (System.Nullable.GetUnderlyingType(p.ClrType) ?? p.ClrType) == typeof(decimal));
+
+            foreach (var property in decimalProps)
+            {
+                property.SetPrecision(10);
+                property.SetScale(2);
+            }
 
             // Additional configuration as needed
         }
