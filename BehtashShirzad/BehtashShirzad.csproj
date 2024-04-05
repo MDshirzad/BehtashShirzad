@@ -24,4 +24,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ApiCommunicator\ApiCommunicator.csproj" />
+    <ProjectReference Include="..\SharedObjects\SharedObjects.csproj" />
+  </ItemGroup>
+
 </Project>

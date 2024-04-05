@@ -22,7 +22,7 @@ namespace ElliotStore.Model.Context
    .GetEntityTypes()
    .SelectMany(t => t.GetProperties())
    .Where(p => (System.Nullable.GetUnderlyingType(p.ClrType) ?? p.ClrType) == typeof(decimal));
-
+            
             foreach (var property in decimalProps)
             {
                 property.SetPrecision(10);

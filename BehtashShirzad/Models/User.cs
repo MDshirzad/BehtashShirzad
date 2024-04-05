@@ -13,5 +13,9 @@ namespace ElliotStore.Model
         [StringLength(250)]
         public string Password { get; set; }
 
+        public bool isVerified { get; set; } = false;
+        public bool isAdmin { get; set; } = false;
+
+
     }
 }
