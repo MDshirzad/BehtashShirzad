@@ -1,6 +1,8 @@
 ﻿using BehtashShirzad.Models.ApiModels;
 using ElliotStore.Model.ApiModels;
 using ElliotStore.Model.Context.DAL;
+using ElliotStore.Tools;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
 
@@ -25,32 +27,40 @@ namespace BehtashShirzad.Controllers.Authentication
         [HttpPost]
         public async Task<IActionResult> Register([FromBody]UserRegistrationDto userRegister)
         {
-            if (    userRegister.Password.Trim().Length<6 || userRegister.Password.Trim().Length > 12) {
+            if (   Infrastructure.IsPasswordLengthValid(userRegister.Password)==SharedObjects.Constants.Status.NotCorrect  ) {
 
                 return BadRequest("طول کلمه عبور نامتعارف است");
             }
 
-            if (userRegister.PhoneNumber.Trim().Length != 11)
+            if (Infrastructure.IsPhoneNumberLengthValid( userRegister.PhoneNumber)==SharedObjects.Constants.Status.NotCorrect)
             {
-                return BadRequest("طول شماره موبایل نامتعارف است");
+                 return BadRequest("طول شماره موبایل نامتعارف است");
             }
-            /// Error Regex not good
-            /// 
-            //var IranianPatternNumber = "^09(1[0-9] |2[0-2] |3[0-9] |9[0-9]) [0-9]{7}$";
-
-            //Regex r = new Regex(IranianPatternNumber);
-            //var isvalid = r.IsMatch(userRegister.PhoneNumber.Trim());
-            //if (!isvalid)
-            //{
-            //    return BadRequest("شماره موبایل نامتعارف است");
-            //}
-            ///
+          
+           
+            if (Infrastructure.IsPhoneNumberFormatValid(userRegister.PhoneNumber)==SharedObjects.Constants.Status.NotCorrect)
+            {
+                return BadRequest("شماره موبایل نامتعارف است");
+            }
+           
             var result = await UserDAL.CreateUser(userRegister);
-            if (result)
+
+            switch (result)
             {
-                return Ok("ثبت نام انجام شد");
+                 
+                case SharedObjects.Constants.Status.Fail:
+                    return BadRequest("ثبت نام انجام نشد");
+                 
+                case SharedObjects.Constants.Status.UserExists:
+                    return BadRequest("نام کاربری و یا شماره موبایل وجود دارد");
+                    
+                case SharedObjects.Constants.Status.Registered:
+                    return Created();
+               
             }
-            return BadRequest("ثبت نام انجام نشد");
+            return BadRequest("خطا داخلی");
+            
+           
         }
     }
 }

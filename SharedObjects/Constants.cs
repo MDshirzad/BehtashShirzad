@@ -16,7 +16,10 @@ namespace SharedObjects
             NotCorrect,
             Correct,
             Success,
-            Fail
+            Fail,
+            UserExists,
+            Registered,
+
 
 
         }

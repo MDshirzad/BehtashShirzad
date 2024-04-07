@@ -1,5 +1,7 @@
-﻿using System.Security.Cryptography;
+﻿using SharedObjects;
+using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ElliotStore.Tools
 {
@@ -20,5 +22,34 @@ namespace ElliotStore.Tools
 
         }
 
+
+        internal static Constants.Status IsPhoneNumberLengthValid(string phone)
+           =>   (phone.Trim().Length == 11) ? Constants.Status.Correct  : Constants.Status.NotCorrect;
+
+
+
+        internal static Constants.Status IsPhoneNumberFormatValid(string phone)
+
+        {
+            var IranianPatternNumber = "09(1[0-9]|3[1-9]|2[1-9])-?[0-9]{3}-?[0-9]{4}";
+
+            Regex r = new Regex(IranianPatternNumber);
+                
+            return r.IsMatch(phone.Trim())?  Constants.Status.Correct : Constants.Status.NotCorrect;
+        }
+
+
+        internal static Constants.Status IsPasswordLengthValid(string pass)
+            
+        { 
+            if (pass.Trim().Length < 6 || pass.Trim().Length > 12)
+            {
+                return Constants.Status.NotCorrect;
+            }
+            return Constants.Status.Correct;
+        }
+
+             
+  
+        }
     }
-}

@@ -2,6 +2,7 @@
 using ElliotStore.Model.ApiModels;
 using ElliotStore.Tools;
 using Microsoft.EntityFrameworkCore;
+using SharedObjects;
 using System.Collections.Frozen;
 
 namespace ElliotStore.Model.Context.DAL
@@ -56,31 +57,31 @@ namespace ElliotStore.Model.Context.DAL
             }
 
         }
-        public static async Task<bool> CreateUser(UserRegistrationDto u)
+        public static async Task<Constants.Status> CreateUser(UserRegistrationDto u)
         {
             try
             {
                 var user = new User() { Username = u.Username, Password = Infrastructure.CreatePassHash(u.Password),PhoneNumber=u.PhoneNumber };
 
-                if (_IsExist(user)) { return false; }
+                if (_IsExist(user)) { return Constants.Status.UserExists; }
                 using (var cn = new DbCommiter())
                 {
                     await cn.Users.AddAsync(user);
                     await cn.SaveChangesAsync();
-                    return true;
+                    return Constants.Status.Registered;
                 }
             }
             catch (Exception ex)
             {
 
-                return false;
+                return Constants.Status.Fail;
             }
         }
 
         static bool _IsExist(User u)
         {
             using (var cn = new DbCommiter())
-                return cn.Users.AnyAsync(_ => _.Username == u.Username).Result;
+                return cn.Users.AnyAsync(_ => _.Username == u.Username || _.PhoneNumber == u.PhoneNumber).Result;
 
 
         }
