@@ -20,16 +20,16 @@ namespace Services
             
 
         }
-
-
-        public bool AddValue(string key,string value)
+        public async Task<bool> AddOtpValueAsync(string phoneNumber, string otpCode)
         {
             try
             {
 
-            
-            IDatabase db = redis.GetDatabase();
-            db.StringSet(key, value);
+
+                IDatabase db = redis.GetDatabase();
+                var ttl = TimeSpan.FromMinutes(2);
+             await   db.StringSetAsync(phoneNumber, otpCode);
+             await   db.KeyExpireAsync(phoneNumber, ttl);
                 return true;
             }
             catch (Exception)
@@ -39,12 +39,29 @@ namespace Services
             }
         }
 
-        public string GetValue(string key )
+        public async Task<bool> AddValueAsync(string key,string value)
+        {
+            try
+            {
+
+            
+            IDatabase db = redis.GetDatabase();
+           await db.StringSetAsync(key, value);
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+        }
+
+        public async Task<string> GetValueAsync(string key )
         {
             try
             {  
                 IDatabase db = redis.GetDatabase();
-                return db.StringGet(key);
+                return await db.StringGetAsync(key);
               
             }
             catch (Exception)

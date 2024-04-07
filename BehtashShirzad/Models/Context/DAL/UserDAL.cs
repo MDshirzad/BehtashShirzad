@@ -1,4 +1,5 @@
-﻿using ElliotStore.Model.ApiModels;
+﻿using BehtashShirzad.Models.ApiModels;
+using ElliotStore.Model.ApiModels;
 using ElliotStore.Tools;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Frozen;
@@ -7,6 +8,35 @@ namespace ElliotStore.Model.Context.DAL
 {
     public class UserDAL
     {
+
+        public static async Task<User> GetUser(UserLoginDto user)
+        {
+
+            using (var cn = new DbCommiter())
+            {
+                try
+                {
+
+                    var userDb =  await cn.Users.Where(_=>_.Username==user.UserName).FirstOrDefaultAsync();
+                    if (userDb!= null)
+                    {
+                        if (userDb.Password == Infrastructure.CreatePassHash(user.Password))
+                        {
+                            return userDb;
+                        }
+                    }
+                    return null;
+
+                }
+                catch (Exception)
+                {
+
+                    return null;
+                }
+            }
+
+        }
+
         public static IEnumerable<User> GetUsers()
         {
 
@@ -26,11 +56,11 @@ namespace ElliotStore.Model.Context.DAL
             }
 
         }
-        public static async Task<bool> CreateUser(UserDto u)
+        public static async Task<bool> CreateUser(UserRegistrationDto u)
         {
             try
             {
-                var user = new User() { Username = u.Username, Password = Infrastructure.CreatePassHash(u.Password) };
+                var user = new User() { Username = u.Username, Password = Infrastructure.CreatePassHash(u.Password),PhoneNumber=u.PhoneNumber };
 
                 if (_IsExist(user)) { return false; }
                 using (var cn = new DbCommiter())
@@ -40,7 +70,7 @@ namespace ElliotStore.Model.Context.DAL
                     return true;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 return false;

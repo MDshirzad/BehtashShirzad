@@ -35,11 +35,11 @@ namespace ApiCommunicator
                         if (parseJson.status.Equals("ارسال نشده"))   
                             return Status.NotSent;
 
-                        if (parseJson.status.Equals("ارسال شده") && parseJson.code is not null ) {
+                        if (parseJson.status.Equals("ارسال موفق بود") && parseJson.code is not null ) {
                             
                             using (var redis = new RedisCommunicator())
                             {
-                                var ss = redis.AddValue(data.To, parseJson.code);
+                                var ss = await redis.AddOtpValueAsync(data.To, parseJson.code);
  
                             }
 

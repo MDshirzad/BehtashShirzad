@@ -5,6 +5,7 @@ using System.Diagnostics;
 
 using ApiCommunicator;
 using SharedObjects.DTO;
+using Services;
 namespace BehtashShirzad.Controllers
 {
     public class HomeController : Controller
@@ -16,10 +17,9 @@ namespace BehtashShirzad.Controllers
             _logger = logger;
         }
 
-        public void Test()
+        public async void Test()
         {
-            var provider = Provider.GetInstance(SharedObjects.Constants.ApiType.SMS_OTP);
-            var data = provider.Call(new OtpDto() { To="09376794095"});
+           
 
         }
 
