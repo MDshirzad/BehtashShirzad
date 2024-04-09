@@ -38,6 +38,31 @@ namespace ElliotStore.Model.Context.DAL
 
         }
 
+        public static async Task<bool> VerifyUser(string phoneNumber)
+        {
+            using (var cn = new DbCommiter())
+            {
+                try
+                {
+
+                    var User = await  cn.Users.Where(_=> _.PhoneNumber==  phoneNumber).FirstOrDefaultAsync();
+                    if (User!= null)
+                    {
+                        User.isVerified = true;
+                      await  cn.SaveChangesAsync();
+                        return true;
+                    }
+                    return false;
+
+                }
+                catch (Exception)
+                {
+
+                    return false;
+                }
+            }
+
+        }
         public static IEnumerable<User> GetUsers()
         {
 
@@ -61,9 +86,15 @@ namespace ElliotStore.Model.Context.DAL
         {
             try
             {
-                var user = new User() { Username = u.Username, Password = Infrastructure.CreatePassHash(u.Password),PhoneNumber=u.PhoneNumber };
+                var user = new User() {
+                    Username = u.Username,
+                    Password = Infrastructure.CreatePassHash(u.Password),
+                    PhoneNumber=u.PhoneNumber 
+                };
 
-                if (_IsExist(user)) { return Constants.Status.UserExists; }
+                if (_IsExist(user)) 
+                    return Constants.Status.UserExists; 
+
                 using (var cn = new DbCommiter())
                 {
                     await cn.Users.AddAsync(user);

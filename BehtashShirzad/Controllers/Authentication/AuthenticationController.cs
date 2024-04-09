@@ -1,9 +1,12 @@
-﻿using BehtashShirzad.Models.ApiModels;
+﻿using ApiCommunicator;
+using BehtashShirzad.Models.ApiModels;
 using ElliotStore.Model.ApiModels;
 using ElliotStore.Model.Context.DAL;
 using ElliotStore.Tools;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
+using Services;
+using SharedObjects.DTO;
 using System.Text.RegularExpressions;
 
 namespace BehtashShirzad.Controllers.Authentication
@@ -62,5 +65,47 @@ namespace BehtashShirzad.Controllers.Authentication
             
            
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CallOtp([FromBody] OtpDto otpDto)
+        {
+            var service = Provider.GetInstance(SharedObjects.Constants.ApiType.SMS_OTP);
+         var result = await  service.Call(otpDto);
+            if (result == SharedObjects.Constants.Status.SENT)
+            {
+                return Ok("Sent");
+            }
+            return BadRequest("NotSent");
+
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> VerifyByOtp([FromBody]VerifyByOtpDto otp )
+        {
+            using(var redis = new RedisCommunicator()) {
+                var userOtpredis = await redis.GetValueAsync(otp.phoneNumber);
+                if (string.IsNullOrEmpty(userOtpredis))
+                {
+                    return BadRequest("OtpNotExist");
+
+                }
+                if (userOtpredis == otp.otp)
+                {
+                    var updateRes = await UserDAL.VerifyUser(otp.phoneNumber);
+                    if (updateRes)
+                    {
+
+                    return Ok("Verified");
+                    }
+                    return Problem("NotVerified");
+                }
+                return BadRequest("NotVerified");
+                    }
+
+        }
+    
+    
     }
 }

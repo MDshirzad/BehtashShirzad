@@ -17,28 +17,15 @@ namespace BehtashShirzad.Controllers
             _logger = logger;
         }
 
-        public async void Test()
-        {
-           
-
-        }
+      
 
         public IActionResult Index()
         {
-            Test();
+           
             return View();
         }
 
-        [Route("/Login")]
-        public IActionResult Login()
-        {
-            return View();
-        }
-        [Route("/Register")]
-        public IActionResult Register()
-        {
-            return View();
-        }
+        
 
         public IActionResult Privacy()
         {
