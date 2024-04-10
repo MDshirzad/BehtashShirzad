@@ -38,6 +38,11 @@ namespace ElliotStore.Model.Context.DAL
 
         }
 
+
+
+
+
+
         public static async Task<bool> VerifyUser(string phoneNumber)
         {
             using (var cn = new DbCommiter())

@@ -4,20 +4,35 @@ using ElliotStore.Model;
 using ElliotStore.Model.ApiModels;
 using ElliotStore.Model.Context.DAL;
 using ElliotStore.Tools;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 using SharedObjects.DTO;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 namespace BehtashShirzad.Controllers.Authentication
 {
     public class AuthenticationController : Controller
     {
+
+        private readonly IConfiguration _configuration;
+
+        public AuthenticationController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         [HttpPost]
         [Route("/Login")]
         public async Task<IActionResult> Login([FromForm]UserLoginDto loginUser)
         {
+            
             var user =await UserDAL.GetUser(loginUser);
             if (user is not null)
             {
@@ -25,7 +40,36 @@ namespace BehtashShirzad.Controllers.Authentication
                 {
 
                 user.Password = "";
-                    return Ok(user);
+
+
+                    var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, user.Username),
+            new Claim("isAdmin", user.isAdmin.ToString()) ,
+              new Claim("isVerified", user.isVerified.ToString()) ,
+           
+            // Add additional claims as needed
+        };
+
+                    var token = new JwtSecurityToken(
+                  issuer: _configuration["Jwt:Issuer"],
+                  audience: _configuration["Jwt:Audience"],
+                  claims: claims,
+                  expires: DateTime.Now.AddDays(1), // Token expiry
+                  signingCredentials: new SigningCredentials(new SymmetricSecurityKey( Infrastructure.SecreteKeyJWT ), SecurityAlgorithms.HmacSha256));
+
+                 
+
+                    var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+                    // Set JWT token as a cookie
+                    Response.Cookies.Append("JwtToken", tokenString, new CookieOptions
+                    {
+                        HttpOnly = true,
+                        // Set other cookie options as needed, such as expiration and secure flag
+                    });
+
+                    return Ok("LoginSuccessFull");
                 }
                 else
                 {

@@ -8,6 +8,7 @@ namespace ElliotStore.Tools
     public static class Infrastructure
     {
 
+        internal static byte[] SecreteKeyJWT {  get; set; }
         internal static string CreatePassHash(string plain)
         {
             string salt = "_"+plain[0..2] + plain[4..6]+"@";
@@ -27,6 +28,18 @@ namespace ElliotStore.Tools
            =>   (phone.Trim().Length == 11) ? Constants.Status.Correct  : Constants.Status.NotCorrect;
 
 
+         
+            internal static byte[] GenerateSecretKey(int keySize)
+            {
+                byte[] keyBytes = new byte[keySize / 8];
+                using (var rng = new RNGCryptoServiceProvider())
+                {
+                     rng.GetBytes(keyBytes);
+                }
+            SecreteKeyJWT = keyBytes;
+            return keyBytes;
+            }
+         
 
         internal static Constants.Status IsPhoneNumberFormatValid(string phone)
 
