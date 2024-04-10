@@ -19,7 +19,7 @@ namespace SharedObjects
             Fail,
             UserExists,
             Registered,
-
+            UserVerified
 
 
         }

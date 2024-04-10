@@ -49,7 +49,7 @@ namespace ElliotStore.Model.Context.DAL
                     if (User!= null)
                     {
                         User.isVerified = true;
-                      await  cn.SaveChangesAsync();
+                        await cn.SaveChangesAsync();
                         return true;
                     }
                     return false;
@@ -107,6 +107,29 @@ namespace ElliotStore.Model.Context.DAL
 
                 return Constants.Status.Fail;
             }
+        }
+
+        public static async Task<Constants.Status> UpdateUserNumber(User u)
+        {
+
+            using (var cn = new DbCommiter())
+            {
+               var user = await cn.Users.Where(_ => _.Username == u.Username).FirstOrDefaultAsync();
+
+                if (user is not null)
+                {
+                    if (!user.isVerified)
+                    {
+
+                        user.PhoneNumber = u.PhoneNumber;
+                        await cn.SaveChangesAsync();
+                        return Constants.Status.Success;
+                    }
+                    return Constants.Status.UserVerified;
+                }
+                return Constants.Status.Fail;
+            }
+
         }
 
         static bool _IsExist(User u)
