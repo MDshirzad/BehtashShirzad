@@ -10,8 +10,8 @@ namespace ApiCommunicator.DTO.Response
 {
     internal class OtpResponse
     {
-        [JsonProperty("code")]
-        internal string code {  get; set; }
+        [JsonProperty("recId")]
+        internal string recId {  get; set; }
         [JsonProperty("status")]
         internal string status { get; set; }
     }

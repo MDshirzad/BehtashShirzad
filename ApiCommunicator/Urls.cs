@@ -8,7 +8,7 @@ namespace ApiCommunicator
 {
 	internal   class Urls
     {
-		internal static string MelliPayamakOtp = "https://console.melipayamak.com/api/send/otp/";
+		internal static string MelliPayamakOtp = "https://console.melipayamak.com/api/send/shared/";
 
 
 	}

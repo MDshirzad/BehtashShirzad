@@ -22,11 +22,13 @@ namespace ApiCommunicator
         {
             try
             {
-             
-                
+                Random rnd = new Random();
+
+                var number = rnd.Next(10000,30000).ToString();
+                var Message =JsonConvert.SerializeObject( new { bodyId=  208577 , to=data.To, args=new List<string> { number.ToString() } });
                 using (var client = new HttpClient())
                 {
-                    var res = await client.PostAsync(Urls.MelliPayamakOtp+ApiKeys.MelliPayamak, new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json")) ;
+                    var res = await client.PostAsync(Urls.MelliPayamakOtp+ApiKeys.MelliPayamak, new StringContent(Message, Encoding.UTF8, "application/json")) ;
                     if (res.IsSuccessStatusCode) {
                         var result  = await res.Content.ReadAsStringAsync();
                          
@@ -35,11 +37,11 @@ namespace ApiCommunicator
                         if (parseJson.status.Equals("ارسال نشده"))   
                             return Status.NotSent;
 
-                        if (parseJson.status.Equals("ارسال موفق بود") && parseJson.code is not null ) {
+                        if (parseJson.status.Equals("ارسال موفق بود")  ) {
                             
                             using (var redis = new RedisCommunicator())
                             {
-                                var ss = await redis.AddOtpValueAsync(data.To, parseJson.code);
+                                var ss = await redis.AddOtpValueAsync(data.To, number);
  
                             }
 
@@ -49,6 +51,7 @@ namespace ApiCommunicator
 
 
                     }
+                   
                     return Status.NotSent;
                 }
                
