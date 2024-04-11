@@ -1,4 +1,9 @@
-﻿using SharedObjects;
+﻿using Azure;
+using ElliotStore.Model;
+using Microsoft.IdentityModel.Tokens;
+using SharedObjects;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -9,6 +14,7 @@ namespace ElliotStore.Tools
     {
 
         internal static byte[] SecreteKeyJWT {  get; set; }
+
         internal static string CreatePassHash(string plain)
         {
             string salt = "_"+plain[0..2] + plain[4..6]+"@";
@@ -18,9 +24,7 @@ namespace ElliotStore.Tools
                 var byteHash = Encoding.UTF8.GetBytes(plain + salt);
                 return Convert.ToBase64String(hasher.ComputeHash(byteHash)).Replace("-","");
             }
-
-
-
+              
         }
 
 
@@ -62,7 +66,41 @@ namespace ElliotStore.Tools
             return Constants.Status.Correct;
         }
 
-             
-  
+        internal static string GenerateToken(List<Claim> claims)
+        {
+
+            try
+            {
+                
+                
+                 
+                    
+                    var signingKey = new SymmetricSecurityKey(SecreteKeyJWT);
+
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = new ClaimsIdentity(claims),
+                        Expires = DateTime.UtcNow.AddHours(1), // Token expiration time
+                        SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256Signature),
+                        
+                    
+                   
+                    };
+
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var token = tokenHandler.CreateToken(tokenDescriptor);
+
+                    return tokenHandler.WriteToken(token);
+                 
+            }
+
+            catch (Exception ex)
+            {
+
+                return "";
+            }
         }
+
+
+}
     }

@@ -18,7 +18,7 @@ namespace ElliotStore.Model.Context.DAL
                 try
                 {
 
-                    var userDb =  await cn.Users.Where(_=>_.Username==user.UserName).FirstOrDefaultAsync();
+                    var userDb =  await cn.Users.Where(_=>_.Username==user.Credential || _.PhoneNumber == user.Credential).FirstOrDefaultAsync();
                     if (userDb!= null)
                     {
                         if (userDb.Password == Infrastructure.CreatePassHash(user.Password))
@@ -94,7 +94,8 @@ namespace ElliotStore.Model.Context.DAL
                 var user = new User() {
                     Username = u.Username,
                     Password = Infrastructure.CreatePassHash(u.Password),
-                    PhoneNumber=u.PhoneNumber 
+                    PhoneNumber=u.PhoneNumber ,
+                    Email = u.Email
                 };
 
                 if (_IsExist(user)) 

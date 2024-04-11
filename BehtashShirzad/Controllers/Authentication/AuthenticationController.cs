@@ -41,35 +41,24 @@ namespace BehtashShirzad.Controllers.Authentication
 
                 user.Password = "";
 
-
                     var claims = new List<Claim>
-        {
+            {
             new Claim(ClaimTypes.Name, user.Username),
             new Claim("isAdmin", user.isAdmin.ToString()) ,
               new Claim("isVerified", user.isVerified.ToString()) ,
            
             // Add additional claims as needed
         };
-
-                    var token = new JwtSecurityToken(
-                  issuer: _configuration["Jwt:Issuer"],
-                  audience: _configuration["Jwt:Audience"],
-                  claims: claims,
-                  expires: DateTime.Now.AddDays(1), // Token expiry
-                  signingCredentials: new SigningCredentials(new SymmetricSecurityKey( Infrastructure.SecreteKeyJWT ), SecurityAlgorithms.HmacSha256));
-
-                 
-
-                    var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-
-                    // Set JWT token as a cookie
-                    Response.Cookies.Append("JwtToken", tokenString, new CookieOptions
+                    var token = Infrastructure.GenerateToken(claims);
+                    if (!string.IsNullOrEmpty(token))
                     {
-                        HttpOnly = true,
-                        // Set other cookie options as needed, such as expiration and secure flag
-                    });
+                        Response.Cookies.Append("Token", token);
+                        return Ok("LoginSuccessFull");
 
-                    return Ok("LoginSuccessFull");
+                    }
+                    return Problem("InnerError");
+
+                   
                 }
                 else
                 {
@@ -170,7 +159,7 @@ namespace BehtashShirzad.Controllers.Authentication
         }
 
         [HttpPost]
-        public async Task<IActionResult> VerifyNumber([FromForm] UserLoginDto user)
+        public async Task<IActionResult> VerifyNumber([FromForm] VerifyNumberDto user)
         {
             if (string.IsNullOrEmpty(user.PhoneNumber))
                 return BadRequest("PhoneNumberEmpty");
@@ -192,7 +181,7 @@ namespace BehtashShirzad.Controllers.Authentication
                     return BadRequest("کد ارسال شده است");
             }
 
-            var userDb =await UserDAL.GetUser(user);
+            var userDb =await UserDAL.GetUser(new(){ Credential=user.UserName });
               if (userDb == null)
             {
                 return BadRequest("UserNotExistOrPasswordIncorrect");

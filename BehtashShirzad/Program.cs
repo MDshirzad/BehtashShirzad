@@ -15,37 +15,12 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<DbCommiter>();
 
-var secreteKey = Infrastructure.GenerateSecretKey(256);
-var secretKeyBase64 = Convert.ToBase64String(secreteKey);
+var secrete = Infrastructure.GenerateSecretKey(256);
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(secretKeyBase64))
-    };
-})
-.AddCookie(options =>
-{
-    options.Cookie.Name = "JwtToken";
-    options.Cookie.HttpOnly = true;
-    // Configure other cookie options as needed
-});
-
-
-
+ 
 
 var app = builder.Build();
+ 
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<DbCommiter>();
@@ -60,13 +35,18 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+
+ 
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
- 
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",

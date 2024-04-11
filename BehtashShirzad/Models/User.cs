@@ -15,7 +15,7 @@ namespace ElliotStore.Model
 
         public bool isVerified { get; set; } = false;
         public bool isAdmin { get; set; } = false;
- 
+        public string Email { get; set; }
         public string PhoneNumber { get; set; }
 
     }
