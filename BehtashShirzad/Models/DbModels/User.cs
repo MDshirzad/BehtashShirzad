@@ -1,15 +1,15 @@
-﻿ 
+﻿
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
-namespace ElliotStore.Model
+namespace BehtashShirzad.Models.DbModels
 {
-    public class User 
+    public class User
     {
         public int Id { get; set; }
         public string Username { get; set; }
 
-        
+
         [StringLength(250)]
         public string Password { get; set; }
 

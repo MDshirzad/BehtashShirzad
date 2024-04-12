@@ -32,7 +32,9 @@ namespace BehtashShirzad.Controllers.Authentication
         [Route("/Login")]
         public async Task<IActionResult> Login([FromForm]UserLoginDto loginUser)
         {
-            
+            if (string.IsNullOrEmpty(loginUser.Credential)|| string.IsNullOrEmpty(loginUser.Password))
+                return NotFound();
+
             var user =await UserDAL.GetUser(loginUser);
             if (user is not null)
             {
@@ -75,6 +77,7 @@ namespace BehtashShirzad.Controllers.Authentication
         [Route("/Register")]
         public async Task<IActionResult> Register([FromForm] UserRegistrationDto userRegister)
         {
+
             if (   Infrastructure.IsPasswordLengthValid(userRegister.Password)==SharedObjects.Constants.Status.NotCorrect  ) {
 
                 return BadRequest("طول کلمه عبور نامتعارف است");

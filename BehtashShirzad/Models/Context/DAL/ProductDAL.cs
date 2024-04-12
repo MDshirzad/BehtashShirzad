@@ -1,4 +1,5 @@
-﻿using ElliotStore.Model.ApiModels;
+﻿using BehtashShirzad.Models.DbModels;
+using ElliotStore.Model.ApiModels;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Frozen;
 
@@ -25,10 +26,11 @@ namespace ElliotStore.Model.Context.DAL
             }
              
         }
+
         public static async Task<bool> CreateProduct(ProductDto p) {
             try
             {
-                var product = new Product() { Description=p.Description,Name=p.Name,Price=p.Price};
+                var product = new Product() { Description=p.Description,Name=p.Name,Price=p.Price,image=p.Image};
                 
             if (_IsExist(product)) { return false; }
             using(var cn = new DbCommiter())

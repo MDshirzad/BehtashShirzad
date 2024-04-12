@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BehtashShirzad.Models.DbModels;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace ElliotStore.Model.Context
@@ -7,12 +8,12 @@ namespace ElliotStore.Model.Context
     {
         
          
-        public DbCommiter() : base(GetOptions()) { }
+        public DbCommiter() : base() { }
 
         public  DbSet<Product> Products { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
-      
+      public DbSet<ProductCategory> productCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,15 +41,7 @@ namespace ElliotStore.Model.Context
             
         }
 
-        private static DbContextOptions GetOptions()
-        {
-
-            var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            var connectionString = config["ConnectionStrings:DefaultConnection"];
-            var options = new DbContextOptionsBuilder();
-            options.UseSqlServer(connectionString);
-            return options.Options;
-        }
+     
 
      
 

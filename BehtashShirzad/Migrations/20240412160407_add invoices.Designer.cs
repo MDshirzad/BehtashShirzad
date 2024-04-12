@@ -4,6 +4,7 @@ using ElliotStore.Model.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BehtashShirzad.Migrations
 {
     [DbContext(typeof(DbCommiter))]
-    partial class DbCommiterModelSnapshot : ModelSnapshot
+    [Migration("20240412160407_add invoices")]
+    partial class addinvoices
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,7 @@ namespace BehtashShirzad.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BehtashShirzad.Models.DbModels.Invoice", b =>
+            modelBuilder.Entity("ElliotStore.Model.Invoice", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -43,16 +46,13 @@ namespace BehtashShirzad.Migrations
                     b.ToTable("Invoices");
                 });
 
-            modelBuilder.Entity("BehtashShirzad.Models.DbModels.Product", b =>
+            modelBuilder.Entity("ElliotStore.Model.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -71,29 +71,10 @@ namespace BehtashShirzad.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("BehtashShirzad.Models.DbModels.ProductCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProductCategory");
-                });
-
-            modelBuilder.Entity("BehtashShirzad.Models.DbModels.User", b =>
+            modelBuilder.Entity("ElliotStore.Model.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -144,35 +125,24 @@ namespace BehtashShirzad.Migrations
                     b.ToTable("InvoiceProduct");
                 });
 
-            modelBuilder.Entity("BehtashShirzad.Models.DbModels.Invoice", b =>
+            modelBuilder.Entity("ElliotStore.Model.Invoice", b =>
                 {
-                    b.HasOne("BehtashShirzad.Models.DbModels.User", "User")
+                    b.HasOne("ElliotStore.Model.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BehtashShirzad.Models.DbModels.Product", b =>
-                {
-                    b.HasOne("BehtashShirzad.Models.DbModels.ProductCategory", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
-
             modelBuilder.Entity("InvoiceProduct", b =>
                 {
-                    b.HasOne("BehtashShirzad.Models.DbModels.Invoice", null)
+                    b.HasOne("ElliotStore.Model.Invoice", null)
                         .WithMany()
                         .HasForeignKey("InvoicesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BehtashShirzad.Models.DbModels.Product", null)
+                    b.HasOne("ElliotStore.Model.Product", null)
                         .WithMany()
                         .HasForeignKey("ProductsId")
                         .OnDelete(DeleteBehavior.Cascade)

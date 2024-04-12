@@ -2,7 +2,7 @@ using BehtashShirzad.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
  
-
+ 
 using ApiCommunicator;
 using SharedObjects.DTO;
 using Services;
@@ -21,7 +21,7 @@ namespace BehtashShirzad.Controllers
 
         public IActionResult Index()
         {
-           
+            
             return View();
         }
 

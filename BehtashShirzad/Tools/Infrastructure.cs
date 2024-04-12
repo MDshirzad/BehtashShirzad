@@ -29,7 +29,14 @@ namespace ElliotStore.Tools
 
 
         internal static Constants.Status IsPhoneNumberLengthValid(string phone)
-           =>   (phone.Trim().Length == 11) ? Constants.Status.Correct  : Constants.Status.NotCorrect;
+        {
+            if (string.IsNullOrEmpty(phone))
+                return Constants.Status.NotCorrect;
+
+
+            return (phone.Trim().Length == 11) ? Constants.Status.Correct : Constants.Status.NotCorrect; 
+         
+        }
 
 
          
@@ -46,9 +53,11 @@ namespace ElliotStore.Tools
          
 
         internal static Constants.Status IsPhoneNumberFormatValid(string phone)
-
         {
-            var IranianPatternNumber = "09(1[0-9]|3[1-9]|2[1-9])-?[0-9]{3}-?[0-9]{4}";
+            if (string.IsNullOrEmpty(phone))
+                return Constants.Status.NotCorrect;
+          
+                var IranianPatternNumber = "09(1[0-9]|3[1-9]|2[1-9])-?[0-9]{3}-?[0-9]{4}";
 
             Regex r = new Regex(IranianPatternNumber);
                 
@@ -58,10 +67,15 @@ namespace ElliotStore.Tools
 
         internal static Constants.Status IsPasswordLengthValid(string pass)
             
-        { 
+        {
+            if ( string.IsNullOrEmpty(pass))
+             return Constants.Status.NotCorrect;
+             
             if (pass.Trim().Length < 6 || pass.Trim().Length > 12)
             {
                 return Constants.Status.NotCorrect;
+            
+            
             }
             return Constants.Status.Correct;
         }

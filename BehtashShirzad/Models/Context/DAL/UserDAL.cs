@@ -1,4 +1,5 @@
 ﻿using BehtashShirzad.Models.ApiModels;
+using BehtashShirzad.Models.DbModels;
 using ElliotStore.Model.ApiModels;
 using ElliotStore.Tools;
 using Microsoft.EntityFrameworkCore;
