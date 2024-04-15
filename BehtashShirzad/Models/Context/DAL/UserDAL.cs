@@ -24,6 +24,10 @@ namespace ElliotStore.Model.Context.DAL
                     {
                         if (userDb.Password == Infrastructure.CreatePassHash(user.Password))
                         {
+                            if (userDb.isAdmin)
+                            {
+                                userDb.Role = "admin";
+                            }
                             return userDb;
                         }
                     }

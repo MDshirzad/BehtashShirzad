@@ -12,7 +12,8 @@ namespace BehtashShirzad.Models.DbModels
 
         [StringLength(250)]
         public string Password { get; set; }
-
+        
+        public string Role { get; set; } = "user";
         public bool isVerified { get; set; } = false;
         public bool isAdmin { get; set; } = false;
         public string Email { get; set; }

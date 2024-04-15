@@ -1,18 +1,25 @@
 ﻿using ElliotStore.Tools;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 
 namespace BehtashShirzad.Controllers.Attrubutes
 {
-    public class JwtAuthorization : Attribute, IAsyncActionFilter
+
+    public class JwtAuthorization : Attribute, IAuthorizationFilter
     {
+        private readonly string[] _roles;
 
-       
+        public JwtAuthorization(params string[] roles)
+        {
+            _roles = roles;
+        }
 
-        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        public void OnAuthorization(AuthorizationFilterContext context)
         {
             if (context.HttpContext.Request.Cookies.TryGetValue("Token", out var token))
             {
@@ -24,12 +31,19 @@ namespace BehtashShirzad.Controllers.Attrubutes
                     // Validate token. This throws an exception if the token is invalid.
                     var principal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
 
-                    // Optionally set the HttpContext.User to the principal,
-                    // which represents the authenticated user.
-                    context.HttpContext.User = principal;
-                    context.HttpContext.Request.Headers.Add("Authorization", "Bearer " + token);
-                    await next();
-                    return;
+                    // Extract roles from the token claims
+                    var roles = principal.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
+
+                    // Check if the user has any of the required role(s)
+                    if (_roles.Any(role => roles.Contains(role)))
+                    {
+                        return; // User has the required role
+                    }
+                    else
+                    {
+                        context.Result = new ForbidResult(); // User does not have the required role
+                        return;
+                    }
                 }
                 catch (Exception)
                 {
@@ -42,8 +56,6 @@ namespace BehtashShirzad.Controllers.Attrubutes
 
             // No token found
             context.Result = new UnauthorizedResult();
-      
-            context.Result = new RedirectToActionResult("Login", "Authentication", null);
         }
 
         private TokenValidationParameters GetValidationParameters()
@@ -57,6 +69,6 @@ namespace BehtashShirzad.Controllers.Attrubutes
                 ClockSkew = TimeSpan.Zero // Optional: prevent clock skew issues
             };
         }
-
     }
+
 }

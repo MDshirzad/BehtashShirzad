@@ -17,7 +17,25 @@ builder.Services.AddDbContext<DbCommiter>();
 
 var secrete = Infrastructure.GenerateSecretKey(256);
 
- 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+   options.TokenValidationParameters = new TokenValidationParameters
+   {
+       ValidateIssuerSigningKey = true,
+       IssuerSigningKey = new SymmetricSecurityKey(Infrastructure.SecreteKeyJWT),
+       ValidateIssuer = false,
+       ValidateAudience = false,
+       ClockSkew = TimeSpan.Zero // Optional: prevent clock skew issues
+   };
+});
+
+// Add authorization services
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
  

@@ -48,6 +48,7 @@ namespace BehtashShirzad.Controllers.Authentication
             new Claim(ClaimTypes.Name, user.Username),
             new Claim("isAdmin", user.isAdmin.ToString()) ,
               new Claim("isVerified", user.isVerified.ToString()) ,
+              new Claim(ClaimTypes.Role,user.Role.ToString())
            
             // Add additional claims as needed
         };
