@@ -18,7 +18,7 @@ namespace ApiCommunicator
         private Provider() { }
         private ApiType _apiType;
 
-        private static Provider _instance;
+        private static Provider? _instance;
 
         public static Provider GetInstance(ApiType apiType)
         {

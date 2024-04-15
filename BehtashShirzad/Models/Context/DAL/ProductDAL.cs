@@ -2,6 +2,9 @@
 using BehtashShirzad.Model.ApiModels;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Frozen;
+using Logger;
+using SharedObjects;
+using System.Reflection;
 
 namespace BehtashShirzad.Model.Context.DAL
 {
@@ -18,8 +21,9 @@ namespace BehtashShirzad.Model.Context.DAL
                    return cn.Products.ToFrozenSet();
                    
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Log.CreateLog(new() { LogType = Constants.LogType.Error,  Description = ex.Message, Extra = ex.InnerException?.Message });
 
                     return Enumerable.Empty<Product>();
                 }
@@ -40,10 +44,10 @@ namespace BehtashShirzad.Model.Context.DAL
                 return true;
             }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                    return false;
+                Log.CreateLog(new() { LogType = Constants.LogType.Error,  Description = ex.Message, Extra = ex.InnerException?.Message });
+                return false;
             }
         }
 
@@ -64,8 +68,9 @@ namespace BehtashShirzad.Model.Context.DAL
                     return true;
                         }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.CreateLog(new() { LogType = Constants.LogType.Error,  Description = ex.Message, Extra = ex.InnerException?.Message });
                 return false;
             }
         }

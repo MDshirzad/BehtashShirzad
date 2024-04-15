@@ -7,15 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="Urls.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Logger\Logger.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />
     <ProjectReference Include="..\SharedObjects\SharedObjects.csproj" />
   </ItemGroup>

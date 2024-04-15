@@ -9,7 +9,7 @@ namespace SharedObjects
     public static class Constants
     {
 
-     public     enum Status
+     public   enum Status
         {
             SENT,
             NotSent,
@@ -24,6 +24,17 @@ namespace SharedObjects
 
         }
 
+        public enum LogType
+        {
+            Success,
+            Fail,
+            Warning,
+            Critical,
+            Info,
+            Error
+
+        }
+
 
         public   enum ApiType
         {
@@ -34,5 +45,8 @@ namespace SharedObjects
 
         }
 
+        public static string LogonRequestText = "New Login Request";
+        public static string RegisterRequestText = "New Registration Request";
+        public static string OkResponse = "Response Ok";
     }
 }

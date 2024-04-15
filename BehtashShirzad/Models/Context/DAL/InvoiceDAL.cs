@@ -1,11 +1,12 @@
 ﻿using BehtashShirzad.Model.ApiModels;
 using BehtashShirzad.Models.DbModels;
- 
+using Logger;
 using Microsoft.EntityFrameworkCore;
  
 using SharedObjects;
 using System.Collections.Frozen;
- 
+using System.Reflection;
+
 
 namespace BehtashShirzad.Model.Context.DAL
 {
@@ -23,9 +24,9 @@ namespace BehtashShirzad.Model.Context.DAL
                     return cn.Invoices.Include( _=>_.User).Include(_=>_.Products).ToFrozenSet();
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
+                    Log.CreateLog(new() { LogType = Constants.LogType.Error,  Description = ex.Message, Extra = ex.InnerException?.Message });
                     return Enumerable.Empty<Invoice>();
                 }
             }
@@ -43,9 +44,10 @@ namespace BehtashShirzad.Model.Context.DAL
                     return cn.Invoices.Where(_=>_.User.Username==username).Include(_ => _.User).Include(_ => _.Products).ToFrozenSet();
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
 
+            Log.CreateLog(new() {LogType=Constants.LogType.Error, Description=ex.Message,Extra= ex.InnerException?.Message});
                     return Enumerable.Empty<Invoice>();
                 }
             }
@@ -85,9 +87,9 @@ namespace BehtashShirzad.Model.Context.DAL
                     return Constants.Status.Success;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                Log.CreateLog(new() { LogType = Constants.LogType.Error,     Description = ex.Message, Extra = ex.InnerException?.Message });
                 return Constants.Status.Fail;
             }
         }
@@ -105,8 +107,9 @@ namespace BehtashShirzad.Model.Context.DAL
                     return true;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.CreateLog(new() { LogType = Constants.LogType.Error,   MethodName = MethodBase.GetCurrentMethod()?.Name ,   Description = ex.Message, Extra = ex.InnerException?.Message });
                 return false;
             }
         }

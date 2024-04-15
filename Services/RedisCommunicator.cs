@@ -61,7 +61,9 @@ namespace Services
             try
             {  
                 IDatabase db = redis.GetDatabase();
-                return await db.StringGetAsync(key);
+                var res =  await db.StringGetAsync(key);
+                
+                return res;
               
             }
             catch (Exception)

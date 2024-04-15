@@ -2,6 +2,9 @@
 using BehtashShirzad.Model.Context;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Logger;
+using SharedObjects;
+using System.Reflection;
 
 namespace BehtashShirzad.Models.Context.DAL
 {
@@ -21,7 +24,7 @@ namespace BehtashShirzad.Models.Context.DAL
             }
             catch (Exception ex)
             {
-
+                Log.CreateLog(new() { LogType = Constants.LogType.Error,  Description = ex.Message, Extra = ex.InnerException?.Message });
                 return Enumerable.Empty<ProductCategory>();
             }
 
@@ -43,7 +46,7 @@ namespace BehtashShirzad.Models.Context.DAL
             }
             catch (Exception ex)
             {
-
+                Log.CreateLog(new() { LogType = Constants.LogType.Error,  Description = ex.Message, Extra = ex.InnerException?.Message });
                 return false;
             }
 
@@ -69,8 +72,9 @@ namespace BehtashShirzad.Models.Context.DAL
                     return true;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.CreateLog(new() { LogType = Constants.LogType.Error,  Description = ex.Message, Extra   = ex.InnerException?.Message });
                 return false;
             }
         }

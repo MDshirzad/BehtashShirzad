@@ -9,23 +9,10 @@ using System.Globalization;
 
 namespace Services
 {
-    public sealed class RabbitCommunicator:IDisposable
+    public   class RabbitCommunicator:IDisposable
     {
-        private RabbitCommunicator() { }
-      
-
-        private static RabbitCommunicator _instance;
-
-        public static RabbitCommunicator GetInstance()
-        {
-            if (_instance == null)
-            {
-                _instance = new RabbitCommunicator();
-                 
-            }
-            return _instance;
-        }
-
+         
+ 
         IConnection _connection;
         IModel _channel;
         public bool connect()

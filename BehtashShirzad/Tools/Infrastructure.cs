@@ -123,5 +123,12 @@ namespace BehtashShirzad.Tools
 
             return token.Claims;
         }
+
+
+        internal static string EncodeForSafety(string plain)
+        {
+
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(plain));
+        }
     }
     }

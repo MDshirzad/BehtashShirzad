@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiCommunicator", "ApiCommu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedObjects", "SharedObjects\SharedObjects.csproj", "{53E9B6AE-B266-4AF3-A5DA-2DC005F42618}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{5B558D33-1FA5-4A57-963C-5F29D5D8C07E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{5B558D33-1FA5-4A57-963C-5F29D5D8C07E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logger", "Logger\Logger.csproj", "{18A97DB6-6129-4857-9191-CEDC63758E2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{5B558D33-1FA5-4A57-963C-5F29D5D8C07E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B558D33-1FA5-4A57-963C-5F29D5D8C07E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B558D33-1FA5-4A57-963C-5F29D5D8C07E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18A97DB6-6129-4857-9191-CEDC63758E2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18A97DB6-6129-4857-9191-CEDC63758E2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18A97DB6-6129-4857-9191-CEDC63758E2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18A97DB6-6129-4857-9191-CEDC63758E2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

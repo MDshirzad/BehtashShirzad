@@ -1,10 +1,13 @@
-﻿using BehtashShirzad.Models.ApiModels;
+﻿using BehtashShirzad.Model.ApiModels;
+using BehtashShirzad.Models.ApiModels;
 using BehtashShirzad.Models.DbModels;
-using BehtashShirzad.Model.ApiModels;
+ 
 using BehtashShirzad.Tools;
+using Logger;
 using Microsoft.EntityFrameworkCore;
 using SharedObjects;
 using System.Collections.Frozen;
+using System.Reflection;
 
 namespace BehtashShirzad.Model.Context.DAL
 {
@@ -34,9 +37,9 @@ namespace BehtashShirzad.Model.Context.DAL
                     return null;
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
+                    Log.CreateLog(new() { LogType = Constants.LogType.Error,  Description = ex.Message, Extra = ex.InnerException?.Message });
                     return null;
                 }
             }
@@ -61,9 +64,9 @@ namespace BehtashShirzad.Model.Context.DAL
                     return null;
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
+                    Log.CreateLog(new() { LogType = Constants.LogType.Error,  Description = ex.Message, Extra = ex.InnerException?.Message });
                     return null;
                 }
             }
@@ -89,8 +92,9 @@ namespace BehtashShirzad.Model.Context.DAL
                     return false;
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Log.CreateLog(new() { LogType = Constants.LogType.Error,  Description = ex.Message, Extra = ex.InnerException?.Message });
 
                     return false;
                 }
@@ -139,13 +143,15 @@ namespace BehtashShirzad.Model.Context.DAL
             }
             catch (Exception ex)
             {
-
+                Log.CreateLog(new() { LogType = Constants.LogType.Error,  Description = ex.Message, Extra = ex.InnerException?.Message });
                 return Constants.Status.Fail;
             }
         }
 
         public static async Task<Constants.Status> UpdateUserNumber(User u)
         {
+            try
+            {
 
             using (var cn = new DbCommiter())
             {
@@ -162,6 +168,13 @@ namespace BehtashShirzad.Model.Context.DAL
                     }
                     return Constants.Status.UserVerified;
                 }
+                return Constants.Status.Fail;
+            }
+            }
+            catch (Exception ex)
+            {
+                Log.CreateLog(new() { LogType = Constants.LogType.Error,  Description = ex.Message, Extra = ex.InnerException?.Message });
+
                 return Constants.Status.Fail;
             }
 
@@ -187,8 +200,9 @@ namespace BehtashShirzad.Model.Context.DAL
                     return true;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Log.CreateLog(new() { LogType = Constants.LogType.Error,  Description = ex.Message, Extra = ex.InnerException?.Message });
                 return false;
             }
         }

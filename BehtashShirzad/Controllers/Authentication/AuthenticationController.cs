@@ -16,23 +16,23 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Newtonsoft.Json;
+using Logger;
+using static SharedObjects.Constants;
+using System.Reflection;
+
 
 namespace BehtashShirzad.Controllers.Authentication
 {
     public class AuthenticationController : Controller
     {
 
-        private readonly IConfiguration _configuration;
-
-        public AuthenticationController(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
+  
         [HttpPost]
         [Route("/Login")]
         public async Task<IActionResult> Login([FromForm]UserLoginDto loginUser)
         {
+            Log.CreateLog(new() { LogType = LogType.Info,  Description = LogonRequestText, Extra=loginUser.ToString() });
+
             if (string.IsNullOrEmpty(loginUser.Credential)|| string.IsNullOrEmpty(loginUser.Password))
                 return NotFound();
 
@@ -63,7 +63,7 @@ namespace BehtashShirzad.Controllers.Authentication
                         Response.Cookies.Append("Token", token);
                         var invoices = InvoiceDAL.GetInvoiceByuser(user.Username);
                         Response.Cookies.Append("invoices",JsonConvert.SerializeObject(invoices));
-                    
+                        Log.CreateLog(new() { LogType = LogType.Success,  Description = OkResponse });
                         return Ok("LoginSuccessFull");
 
                     }
@@ -86,6 +86,8 @@ namespace BehtashShirzad.Controllers.Authentication
         [Route("/Register")]
         public async Task<IActionResult> Register([FromForm] UserRegistrationDto userRegister)
         {
+            Log.CreateLog(new() { LogType = LogType.Info,  Description = RegisterRequestText, Extra = userRegister.ToString() });
+
 
             if (   Infrastructure.IsPasswordLengthValid(userRegister.Password)==SharedObjects.Constants.Status.NotCorrect  ) {
 
