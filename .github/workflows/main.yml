@@ -34,5 +34,5 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./publish
+        local-dir: ./publish/
         server-dir: C:\Users\Administrator\Desktop\ElliotStore  # Adjust the server directory as per your FTP setup
