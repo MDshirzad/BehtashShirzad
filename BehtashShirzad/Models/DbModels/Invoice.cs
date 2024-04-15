@@ -7,6 +7,7 @@
         public Guid FactoNumber { get; set; } = Guid.NewGuid();
         public User? User { get; set; }
         public List<Product>? Products { get; set; }
+     
 
     }
 }

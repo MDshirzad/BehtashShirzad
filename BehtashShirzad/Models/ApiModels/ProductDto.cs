@@ -1,4 +1,4 @@
-﻿namespace ElliotStore.Model.ApiModels
+﻿namespace BehtashShirzad.Model.ApiModels
 {
     public class ProductDto
     {

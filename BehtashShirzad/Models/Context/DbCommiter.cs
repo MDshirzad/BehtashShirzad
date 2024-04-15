@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace ElliotStore.Model.Context
+namespace BehtashShirzad.Model.Context
 {
     public class DbCommiter : DbContext
     {

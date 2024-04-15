@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ElliotStore.Model.ApiModels
+namespace BehtashShirzad.Model.ApiModels
 {
     public class UserRegistrationDto
     {

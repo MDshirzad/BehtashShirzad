@@ -1,9 +1,13 @@
-﻿using BehtashShirzad.Models.DbModels;
-using ElliotStore.Model.ApiModels;
+﻿using BehtashShirzad.Model.ApiModels;
+using BehtashShirzad.Models.DbModels;
+ 
 using Microsoft.EntityFrameworkCore;
+ 
+using SharedObjects;
 using System.Collections.Frozen;
+ 
 
-namespace ElliotStore.Model.Context.DAL
+namespace BehtashShirzad.Model.Context.DAL
 {
     public class InvoiceDAL
     {
@@ -28,7 +32,27 @@ namespace ElliotStore.Model.Context.DAL
 
         }
 
-        public static async Task<bool> CreateInvoice(InvoiceDto i)
+        public static IEnumerable<Invoice> GetInvoiceByuser(string username)
+        {
+
+            using (var cn = new DbCommiter())
+            {
+                try
+                {
+
+                    return cn.Invoices.Where(_=>_.User.Username==username).Include(_ => _.User).Include(_ => _.Products).ToFrozenSet();
+
+                }
+                catch (Exception)
+                {
+
+                    return Enumerable.Empty<Invoice>();
+                }
+            }
+
+        }
+
+        public static async Task<Constants.Status> CreateInvoice(InvoiceDto i)
         {
             try
             {
@@ -46,8 +70,9 @@ namespace ElliotStore.Model.Context.DAL
 
                     if( products.Count == 0){
 
-                        return false;
+                        return Constants.Status.Fail;
                     }
+                    
 
                     var Invoice = new Invoice()
                     {
@@ -57,13 +82,13 @@ namespace ElliotStore.Model.Context.DAL
                     };
                     await cn.Invoices.AddAsync(Invoice);
                     await cn.SaveChangesAsync();
-                    return true;
+                    return Constants.Status.Success;
                 }
             }
             catch (Exception)
             {
 
-                return false;
+                return Constants.Status.Fail;
             }
         }
  

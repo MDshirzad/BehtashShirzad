@@ -1,5 +1,6 @@
 ﻿
 using BehtashShirzad.Controllers.Attrubutes;
+using BehtashShirzad.Model.Context.DAL;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,11 +11,16 @@ namespace BehtashShirzad.Controllers.User
         [JwtAuthorization("user")]
         public IActionResult Index()
         {
-           
-             
+
+            var user = HttpContext.Request.Cookies.TryGetValue("Token", out var token);
+
+            
+
+
             return View();
         }
 
+        
 
         [JwtAuthorization("admin")]
         public IActionResult Test()

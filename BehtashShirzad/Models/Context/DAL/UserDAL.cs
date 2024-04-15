@@ -1,12 +1,12 @@
 ﻿using BehtashShirzad.Models.ApiModels;
 using BehtashShirzad.Models.DbModels;
-using ElliotStore.Model.ApiModels;
-using ElliotStore.Tools;
+using BehtashShirzad.Model.ApiModels;
+using BehtashShirzad.Tools;
 using Microsoft.EntityFrameworkCore;
 using SharedObjects;
 using System.Collections.Frozen;
 
-namespace ElliotStore.Model.Context.DAL
+namespace BehtashShirzad.Model.Context.DAL
 {
     public class UserDAL
     {
@@ -45,6 +45,30 @@ namespace ElliotStore.Model.Context.DAL
 
 
 
+        public static async Task<User> GetUserById(int userId)
+        {
+
+            using (var cn = new DbCommiter())
+            {
+                try
+                {
+
+                    var userDb = await cn.Users.Where(_ => _.Id == userId).FirstOrDefaultAsync();
+                    if (userDb != null)
+                    {
+                        return userDb;
+                    }
+                    return null;
+
+                }
+                catch (Exception)
+                {
+
+                    return null;
+                }
+            }
+
+        }
 
 
 

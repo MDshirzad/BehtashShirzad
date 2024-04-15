@@ -1,5 +1,5 @@
 ﻿using Azure;
-using ElliotStore.Model;
+using BehtashShirzad.Model;
 using Microsoft.IdentityModel.Tokens;
 using SharedObjects;
 using System.IdentityModel.Tokens.Jwt;
@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace ElliotStore.Tools
+namespace BehtashShirzad.Tools
 {
     public static class Infrastructure
     {
@@ -115,6 +115,13 @@ namespace ElliotStore.Tools
             }
         }
 
+         
+        internal static IEnumerable<Claim> GetClaims(string jwtToken)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadJwtToken(jwtToken);
 
-}
+            return token.Claims;
+        }
+    }
     }

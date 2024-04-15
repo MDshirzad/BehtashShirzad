@@ -1,7 +1,7 @@
 
 
-using ElliotStore.Model.Context;
-using ElliotStore.Tools;
+using BehtashShirzad.Model.Context;
+using BehtashShirzad.Tools;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

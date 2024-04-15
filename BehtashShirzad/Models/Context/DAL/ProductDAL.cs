@@ -1,9 +1,9 @@
 ﻿using BehtashShirzad.Models.DbModels;
-using ElliotStore.Model.ApiModels;
+using BehtashShirzad.Model.ApiModels;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Frozen;
 
-namespace ElliotStore.Model.Context.DAL
+namespace BehtashShirzad.Model.Context.DAL
 {
     public static class ProductDAL
     {

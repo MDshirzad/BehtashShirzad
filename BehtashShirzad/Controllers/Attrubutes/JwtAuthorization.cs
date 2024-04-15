@@ -1,4 +1,4 @@
-﻿using ElliotStore.Tools;
+﻿using BehtashShirzad.Tools;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -27,10 +27,10 @@ namespace BehtashShirzad.Controllers.Attrubutes
                 {
                     var tokenHandler = new JwtSecurityTokenHandler();
                     var validationParameters = GetValidationParameters();
-
+                     
                     // Validate token. This throws an exception if the token is invalid.
                     var principal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
-
+                    var claimsIdentity = context.HttpContext.User.Identity as ClaimsIdentity;
                     // Extract roles from the token claims
                     var roles = principal.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
 

@@ -1,9 +1,9 @@
 ﻿using ApiCommunicator;
 using BehtashShirzad.Models.ApiModels;
-using ElliotStore.Model;
-using ElliotStore.Model.ApiModels;
-using ElliotStore.Model.Context.DAL;
-using ElliotStore.Tools;
+using BehtashShirzad.Model;
+using BehtashShirzad.Model.ApiModels;
+using BehtashShirzad.Model.Context.DAL;
+using BehtashShirzad.Tools;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Forms;
@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace BehtashShirzad.Controllers.Authentication
 {
@@ -45,6 +46,7 @@ namespace BehtashShirzad.Controllers.Authentication
 
                     var claims = new List<Claim>
             {
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.Username),
             new Claim("isAdmin", user.isAdmin.ToString()) ,
               new Claim("isVerified", user.isVerified.ToString()) ,
@@ -52,10 +54,16 @@ namespace BehtashShirzad.Controllers.Authentication
            
             // Add additional claims as needed
         };
+
+
                     var token = Infrastructure.GenerateToken(claims);
                     if (!string.IsNullOrEmpty(token))
                     {
+
                         Response.Cookies.Append("Token", token);
+                        var invoices = InvoiceDAL.GetInvoiceByuser(user.Username);
+                        Response.Cookies.Append("invoices",JsonConvert.SerializeObject(invoices));
+                    
                         return Ok("LoginSuccessFull");
 
                     }
