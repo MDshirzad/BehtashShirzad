@@ -5,23 +5,28 @@ using Microsoft.AspNetCore.Mvc;
 using SharedObjects;
 using BehtashShirzad.Tools;
 using System.Security.Claims;
+using BehtashShirzad.Controllers.Attrubutes;
 
 namespace BehtashShirzad.Controllers.Invoice
 {
     public class InvoiceController : Controller
     {
+        [JwtAuthorization("user","admin")]
         public async Task<IActionResult> Create(InvoiceDto invoice)
         {
             try
             {
+ 
+            var currentUser = Infrastructure.GetClaims(HttpContext.Request.Cookies["Token"]).FirstOrDefault(_ => _.Type == ClaimTypes.NameIdentifier).ToString();
 
-            
-            if (invoice.products == null || invoice.userId==null) throw new ArgumentNullException(nameof(invoice));
-
-            var currentUser = Infrastructure.GetClaims(HttpContext.Request.Cookies["Token"]).Where(_=>_.Type==ClaimTypes.NameIdentifier).FirstOrDefault().ToString();
-             var RequestForUser =await UserDAL.GetUserById(invoice.userId);
-                if (RequestForUser.Id != Int32.Parse(currentUser)) { return Unauthorized("User are diffrent"); }
-            var res =await InvoiceDAL.CreateInvoice(invoice);
+                var products = new List<Product>();
+                foreach (var item in invoice.products)
+                {
+                    Product product = new Product() { Id = item };
+                    products.Add(product);  
+                }
+                
+            var res =await InvoiceDAL.CreateInvoice(new() { User=new() {  Id=Convert.ToInt32(currentUser)},Products= products });
             switch (res)
             {
                 case Constants.Status.Fail:

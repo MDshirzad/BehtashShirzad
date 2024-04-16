@@ -1,8 +1,12 @@
 ﻿
 using BehtashShirzad.Controllers.Attrubutes;
 using BehtashShirzad.Model.Context.DAL;
+using BehtashShirzad.Models.DbModels;
+using BehtashShirzad.Tools;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Security.Claims;
 
 namespace BehtashShirzad.Controllers.User
 {
@@ -12,12 +16,12 @@ namespace BehtashShirzad.Controllers.User
         public IActionResult Index()
         {
 
-            var user = HttpContext.Request.Cookies.TryGetValue("Token", out var token);
+            var user = Infrastructure.GetClaims(HttpContext.Request.Cookies["Token"]).FirstOrDefault(_ => _.Type.ToLower().ToString() == "unique_name").Value; 
 
-            
+            var invoices = InvoiceDAL.GetInvoiceByuser(user);
+           
 
-
-            return View();
+            return View("~/Views/User/Dashboard.cshtml",invoices );
         }
 
         

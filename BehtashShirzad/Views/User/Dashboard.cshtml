@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "داشبورد";
+}
+@{
+}
+@using BehtashShirzad.Models.DbModels
+@model IEnumerable<Invoice>
+@{
+
+    foreach (var item in Model)
+    {
+        <div> @item.FactoNumber</div>
+        <div>@item.sum</div>
+    }
+}

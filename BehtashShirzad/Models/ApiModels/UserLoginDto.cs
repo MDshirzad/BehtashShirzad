@@ -10,12 +10,12 @@ namespace BehtashShirzad.Models.ApiModels
        
         public   string Password { get; set; }
 
-        public override string ToString()
-        {
-            this.Password = Infrastructure.EncodeForSafety(Infrastructure.CreatePassHash( this.Password));
-            this.Credential = Infrastructure.EncodeForSafety(this.Credential);
-            return JsonConvert.SerializeObject(this);
-        }
+        //public override string ToString()
+        //{
+        //    this.Password = Infrastructure.EncodeForSafety(Infrastructure.CreatePassHash( this.Password));
+        //    this.Credential = Infrastructure.EncodeForSafety(this.Credential);
+        //    return JsonConvert.SerializeObject(this);
+        //}
 
     }
 }

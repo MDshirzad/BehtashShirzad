@@ -49,13 +49,15 @@ namespace BehtashShirzad.Controllers.Attrubutes
                 {
                     // Token validation failed
                     context.HttpContext.Response.Cookies.Delete("Token");
-                    context.Result = new UnauthorizedResult();
+                   
+                    context.Result = new RedirectToActionResult("Login", "Authentication",null);
+                   
                     return;
                 }
-            }
+            } 
+            context.Result = new RedirectToActionResult("Login", "Authentication", null);
 
-            // No token found
-            context.Result = new UnauthorizedResult();
+            return;
         }
 
         private TokenValidationParameters GetValidationParameters()

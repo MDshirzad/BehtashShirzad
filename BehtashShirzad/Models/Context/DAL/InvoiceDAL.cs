@@ -54,7 +54,7 @@ namespace BehtashShirzad.Model.Context.DAL
 
         }
 
-        public static async Task<Constants.Status> CreateInvoice(InvoiceDto i)
+        public static async Task<Constants.Status> CreateInvoice(Invoice i)
         {
             try
             {
@@ -62,9 +62,9 @@ namespace BehtashShirzad.Model.Context.DAL
                 using (var cn = new DbCommiter())
                 {
                     var products = new List<Product>();
-                    foreach (var item in i.products)
+                    foreach (var item in i.Products)
                     {
-                      var product= cn.Products?.Where(_=>_.Id==item)?.FirstOrDefault();
+                      var product= cn.Products?.Where(_=>_.Id==item.Id)?.FirstOrDefault();
                         if (product != null)
                         products.Add(product);
 
@@ -78,7 +78,7 @@ namespace BehtashShirzad.Model.Context.DAL
 
                     var Invoice = new Invoice()
                     {
-                        User = cn.Users.Find(i.userId),
+                        User = cn.Users.Find(i.User.Id),
                         Products = products
 
                     };

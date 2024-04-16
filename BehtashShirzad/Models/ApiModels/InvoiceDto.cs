@@ -6,7 +6,6 @@ namespace BehtashShirzad.Model.ApiModels
     public class InvoiceDto:IBaseDto
     {
         
-        public int userId { get; set; }
         public int[] products { get; set; }
 
         public override string ToString()

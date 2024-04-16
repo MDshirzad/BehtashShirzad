@@ -31,12 +31,13 @@ namespace BehtashShirzad.Controllers.Authentication
         [Route("/Login")]
         public async Task<IActionResult> Login([FromForm]UserLoginDto loginUser)
         {
-            Log.CreateLog(new() { LogType = LogType.Info,  Description = LogonRequestText, Extra=loginUser.ToString() });
+            var user = await UserDAL.GetUser(loginUser);
+            Log.CreateLog(new() { LogType = LogType.Info,  Description = LogonRequestText, Extra=loginUser.Credential.ToString() });
 
             if (string.IsNullOrEmpty(loginUser.Credential)|| string.IsNullOrEmpty(loginUser.Password))
                 return NotFound();
 
-            var user =await UserDAL.GetUser(loginUser);
+            
             if (user is not null)
             {
                 if (user.isVerified)
@@ -61,8 +62,7 @@ namespace BehtashShirzad.Controllers.Authentication
                     {
 
                         Response.Cookies.Append("Token", token);
-                        var invoices = InvoiceDAL.GetInvoiceByuser(user.Username);
-                        Response.Cookies.Append("invoices",JsonConvert.SerializeObject(invoices));
+                        
                         Log.CreateLog(new() { LogType = LogType.Success,  Description = OkResponse });
                         return Ok("LoginSuccessFull");
 
