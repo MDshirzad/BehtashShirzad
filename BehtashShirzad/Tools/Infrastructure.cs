@@ -124,6 +124,8 @@ namespace BehtashShirzad.Tools
             return token.Claims;
         }
 
+        internal static string? GetCurrentuser(string jwt)=>  GetClaims(jwt)?.FirstOrDefault(_ => _.Type.ToString().ToLower() == "unique_name")?.Value; 
+        
 
         internal static string EncodeForSafety(string plain)
         {

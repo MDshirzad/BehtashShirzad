@@ -64,7 +64,7 @@ namespace BehtashShirzad.Controllers.Authentication
                         Response.Cookies.Append("Token", token);
                         
                         Log.CreateLog(new() { LogType = LogType.Success,  Description = OkResponse });
-                        return Ok("LoginSuccessFull");
+                        return RedirectToAction("Index","User");
 
                     }
                     return Problem("InnerError");

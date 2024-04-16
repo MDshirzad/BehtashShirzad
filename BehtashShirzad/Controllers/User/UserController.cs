@@ -26,12 +26,6 @@ namespace BehtashShirzad.Controllers.User
 
         
 
-        [JwtAuthorization("admin")]
-        public IActionResult Test()
-        {
-
-
-            return View();
-        }
+         
     }
 }

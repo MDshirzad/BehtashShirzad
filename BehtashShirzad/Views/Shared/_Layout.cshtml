@@ -18,6 +18,12 @@
 
 
 </head>
+
+@{
+
+@using BehtashShirzad.Tools;
+    var token = Context.Request.Cookies["Token"];
+}
 <body>
     <!----- Start header ----->
     <header class="bg-white">
@@ -54,8 +60,29 @@
                             </ul>
                         </div>
                     </a>
-                    <a href="/Register" class="btn btn-outline-info font-13 vazir-med-fa"><i class="fa fa-user-plus pl-1"></i>ثبت نام</a>
-                    <a href="/Login" class="btn btn-info font-13 vazir-med-fa mx-2">ورود</a>
+                    @{
+
+                        if (string.IsNullOrEmpty(token))
+                        {
+                            <a href="/Register" class="btn btn-outline-info font-13 vazir-med-fa"><i class="fa fa-user-plus pl-1"></i>ثبت نام</a>
+                            <a href="/Login" class="btn btn-info font-13 vazir-med-fa mx-2">ورود</a>
+                        }else{
+
+                            var currenUser = Infrastructure.GetCurrentuser(token);
+                            if (currenUser != null)
+                        {
+                           
+                                <a href="/User" class="btn btn-info font-13 vazir-med-fa mx-2">@currenUser</a>
+                            }
+                            else
+                            {
+                                <a href="/Register" class="btn btn-outline-info font-13 vazir-med-fa"><i class="fa fa-user-plus pl-1"></i>ثبت نام</a>
+                                <a href="/Login" class="btn btn-info font-13 vazir-med-fa mx-2">ورود</a>
+                            }
+                        }
+                    }
+
+                  
                    
                 </div>
 
@@ -69,8 +96,35 @@
                 </div>
 
                 <div class="col-12 d-flex d-lg-none justify-content-center mb-4 mobile-header">
-                    <a href="/Register" class="border-left ml-3"><i class="fa fa-user-plus ml-3"></i></a>
-                    <a href="/Login" class="border-left ml-3"><i class="fa fa-lock ml-3"></i></a>
+
+
+                    @{
+                      
+                          
+                        if (string.IsNullOrEmpty(token))
+                        {
+                            <a href="/Register" class="border-left ml-3"><i class="fa fa-user-plus ml-3"></i></a>
+                            <a href="/Login" class="border-left ml-3"><i class="fa fa-lock ml-3"></i></a>
+                        }
+                        else
+                        {
+
+                            var currenUser = Infrastructure.GetCurrentuser(token);
+                            if (currenUser != null)
+                            {
+
+                                <a href="/User" class="btn btn-info font-13 vazir-med-fa mx-2">@currenUser</a>
+                            }
+                            else
+                            {
+                                <a href="/Register" class="border-left ml-3"><i class="fa fa-user-plus ml-3"></i></a>
+                                <a href="/Login" class="border-left ml-3"><i class="fa fa-lock ml-3"></i></a>
+                            }
+                        }
+                    }
+
+
+                  
                    
                     <a href="#" class="border-left ml-3 dropdown" data-toggle="dropdown">
                         <span class="badge badge-info badge-pill">2</span><i class="fa fa-shopping-basket ml-3"></i>
