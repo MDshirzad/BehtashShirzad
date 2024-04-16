@@ -6,11 +6,13 @@
 @model IEnumerable<Invoice>
  
 @{
-@using System.Security.Claims;
+ 
 @using BehtashShirzad.Tools
 
+    var token = Context.Request.Cookies["Token"];
+    var user = Infrastructure.GetCurrentuser(token);
 
-    var user = Model.Select(_ => _.User.Username).FirstOrDefault();
+    
     var cources = Model.Count(invoice => invoice.Products.Any(product => product.Category.Name.ToLower() == "cource"));
     var sources = Model.Count(invoice => invoice.Products.Any(product => product.Category.Name.ToLower() == "source"));
 }
