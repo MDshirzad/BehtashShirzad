@@ -19,7 +19,7 @@ namespace BehtashShirzad.Controllers.User
             var user = Infrastructure.GetClaims(HttpContext.Request.Cookies["Token"]).FirstOrDefault(_ => _.Type.ToLower().ToString() == "unique_name").Value; 
 
             var invoices = InvoiceDAL.GetInvoiceByuser(user);
-           
+            
 
             return View("~/Views/User/Dashboard.cshtml",invoices );
         }
