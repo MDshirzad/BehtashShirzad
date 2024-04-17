@@ -1,9 +1,3 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
-
-
-
 name: Build and Deploy ASP.NET Core App
 
 on:
@@ -23,16 +17,25 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-       dotnet-version: 8.0.x
-       
+        dotnet-version: 8.0.x
+
+    - name: Stop IIS Site
+      run: curl -X GET "${{ secrets.FTP_SERVER }}:200/Do/stop"
+      
     - name: Build and Publish
       run: dotnet publish -c Release -o ./publish
 
-    - name: Deploy to FTP
+    - name: Zip Published Output
+      run: Compress-Archive -Path ./publish/* -DestinationPath ./publish.zip
+
+    - name: Deploy Zip to FTP
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./publish/
+        local-dir: ./publish.zip  # Note: make sure this path is correct
         server-dir: C:/Users/Administrator/Desktop/ElliotStore/  # Adjust the server directory as per your FTP setup
+
+    - name: Start IIS Site
+      run: curl -X GET "${{ secrets.FTP_SERVER }}:200/Do/start"
