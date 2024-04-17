@@ -18,9 +18,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 8.0.x
-
-    - name: Stop IIS Site
-      run: curl -X GET "${{ secrets.FTP_SERVER }}:200/Do/stop"
+ 
       
     - name: Build and Publish
       run: dotnet publish -c Release -o ./publish
@@ -40,5 +38,4 @@ jobs:
         local-dir: ./zip/  # Adjusted path to match the directory where the zip file is located
         server-dir: C:/Users/Administrator/Desktop/ElliotStore/  # Adjust the server directory as per your FTP setup
 
-    - name: Start IIS Site
-      run: curl -X GET "${{ secrets.FTP_SERVER }}:200/Do/start"
+ 
