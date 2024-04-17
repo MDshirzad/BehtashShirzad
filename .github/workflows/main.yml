@@ -26,7 +26,7 @@ jobs:
       run: dotnet publish -c Release -o ./publish
 
     - name: Zip Published Output
-      run: Compress-Archive -Path ./publish/* -DestinationPath ./publish.zip
+      run: Compress-Archive -Path ./publish/* -DestinationPath ./zip/publish.zip
 
     - name: Deploy Zip to FTP
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
@@ -34,7 +34,7 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./publish/  # Note: make sure this path is correct
+        local-dir: ./publish/zip/  # Note: make sure this path is correct
         server-dir: C:/Users/Administrator/Desktop/ElliotStore/  # Adjust the server directory as per your FTP setup
 
     - name: Start IIS Site
