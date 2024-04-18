@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using Logger;
 using static SharedObjects.Constants;
 using System.Reflection;
+using Azure.Core;
 
 
 namespace BehtashShirzad.Controllers.Authentication
@@ -31,7 +32,8 @@ namespace BehtashShirzad.Controllers.Authentication
         [Route("/Login")]
         public async Task<IActionResult> Login([FromForm]UserLoginDto loginUser)
         {
-            var user = await UserDAL.GetUser(loginUser);
+            var remoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+            var user = await UserDAL.GetUserLogin(loginUser,remoteIpAddress);
             Log.CreateLog(new() { LogType = LogType.Info,  Description = LogonRequestText, Extra=loginUser.Credential.ToString() });
 
             if (string.IsNullOrEmpty(loginUser.Credential)|| string.IsNullOrEmpty(loginUser.Password))

@@ -14,7 +14,7 @@ namespace BehtashShirzad.Model.Context.DAL
     public class UserDAL
     {
 
-        public static async Task<User> GetUser(UserLoginDto user)
+        public static async Task<User> GetUserLogin(UserLoginDto user,string IpAddress)
         {
 
             using (var cn = new DbCommiter())
@@ -22,9 +22,12 @@ namespace BehtashShirzad.Model.Context.DAL
                 try
                 {
 
-                    var userDb =  await cn.Users.Where(_=>_.Username==user.Credential || _.PhoneNumber == user.Credential).AsNoTracking().FirstOrDefaultAsync();
+                    var userDb =  await cn.Users.Where(_=>_.Username==user.Credential || _.PhoneNumber == user.Credential).FirstOrDefaultAsync();
                     if (userDb!= null)
                     {
+                        userDb.lastIp = IpAddress;
+                        userDb.lastLoginTime = DateTime.Now.ToString();
+                        await cn.SaveChangesAsync();
                         if (userDb.Password == Infrastructure.CreatePassHash(user.Password))
                         {
                             if (userDb.isAdmin)
@@ -40,6 +43,38 @@ namespace BehtashShirzad.Model.Context.DAL
                 catch (Exception ex)
                 {
                     Log.CreateLog(new() { LogType = Constants.LogType.Error,  Description = ex.Message, Extra = ex.InnerException?.Message });
+                    return null;
+                }
+            }
+
+        }
+
+        public static async Task<User> GetUser(UserLoginDto user)
+        {
+
+            using (var cn = new DbCommiter())
+            {
+                try
+                {
+
+                    var userDb = await cn.Users.Where(_ => _.Username == user.Credential || _.PhoneNumber == user.Credential).AsNoTracking().FirstOrDefaultAsync();
+                    if (userDb != null)
+                    {
+                        if (userDb.Password == Infrastructure.CreatePassHash(user.Password))
+                        {
+                            if (userDb.isAdmin)
+                            {
+                                userDb.Role = "admin";
+                            }
+                            return userDb;
+                        }
+                    }
+                    return null;
+
+                }
+                catch (Exception ex)
+                {
+                    Log.CreateLog(new() { LogType = Constants.LogType.Error, Description = ex.Message, Extra = ex.InnerException?.Message });
                     return null;
                 }
             }

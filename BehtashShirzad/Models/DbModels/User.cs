@@ -19,6 +19,8 @@ namespace BehtashShirzad.Models.DbModels
         public bool isAdmin { get; set; } = false;
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
+        public string lastLoginTime { get; set; }   
+        public string lastIp { get; set; }
         [JsonIgnore]
         public List<Invoice> invoices { get; set; }
     }
