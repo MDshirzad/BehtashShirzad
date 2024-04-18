@@ -31,6 +31,19 @@ namespace BehtashShirzad.Controllers
             return View();
         }
 
+        public IActionResult Courses()
+        {
+
+            return View();
+        }
+
+        public IActionResult Sources()
+        {
+
+            return View();
+        }
+
+
 
 
         public IActionResult Privacy()

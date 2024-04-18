@@ -30,6 +30,66 @@ namespace BehtashShirzad.Model.Context.DAL
             }
 
         }
+        public static IEnumerable<Product> GetCourses()
+        {
+
+            using (var cn = new DbCommiter())
+            {
+                try
+                {
+
+                    return cn.Products.Where(_ => _.IsVisible).Include(_=>_.Category).Where(_=> _.Category.Name.ToLower()=="course").ToFrozenSet();
+
+                }
+                catch (Exception ex)
+                {
+                    Log.CreateLog(new() { LogType = Constants.LogType.Error, Description = ex.Message, Extra = ex.InnerException?.Message });
+
+                    return Enumerable.Empty<Product>();
+                }
+            }
+
+        }
+        public static IEnumerable<Product> GetSources()
+        {
+
+            using (var cn = new DbCommiter())
+            {
+                try
+                {
+
+                    return cn.Products.Where(_ => _.IsVisible).Include(_ => _.Category).Where(_ => _.Category.Name.ToLower() == "source").ToFrozenSet();
+
+                }
+                catch (Exception ex)
+                {
+                    Log.CreateLog(new() { LogType = Constants.LogType.Error, Description = ex.Message, Extra = ex.InnerException?.Message });
+
+                    return Enumerable.Empty<Product>();
+                }
+            }
+
+        }
+        public static IEnumerable<Product> GetTopThreeSources()
+        {
+
+            using (var cn = new DbCommiter())
+            {
+                try
+                {
+
+                    var res = cn.Products.Where(_ => _.IsVisible).Include(_ => _.Category).Where(_ => _.Category.Name.ToLower() == "source").OrderByDescending(_=>_.Id).ToList().TakeLast(3);
+                    return res;
+                }
+                catch (Exception ex)
+                {
+                    Log.CreateLog(new() { LogType = Constants.LogType.Error, Description = ex.Message, Extra = ex.InnerException?.Message });
+
+                    return Enumerable.Empty<Product>();
+                }
+            }
+
+        }
 
         public static async Task<IEnumerable<Product>> GetTopTenProducts()
         {

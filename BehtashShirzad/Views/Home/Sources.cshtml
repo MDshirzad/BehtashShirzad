@@ -1,0 +1,20 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    ViewData["Title"] = "محصولات";
+}
+
+
+<!----- Start course boxes ----->
+<div class="container my-3">
+    <div class="row">
+
+        @await Component.InvokeAsync(typeof(BehtashShirzad.ViewComponents.Products.ProductSeperatedComponents.SourcesViewComponent))
+
+
+    </div>
+</div>
+

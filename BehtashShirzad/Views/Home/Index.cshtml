@@ -10,21 +10,41 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-12 d-flex justify-content-between">
-            <h6 class="title pb-2">جدیدترین دوره های آموزشی</h6>
+            <h6 class="title pb-2">جدید ترین محصولات</h6>
             <a class="title pb-2" href="@Url.Action("Products","Home")">بیشتر</a>
         </div>
     </div>
 </div>
 
 
+<!----- Start course boxes ----->
+<div class="container my-3">
+    <div class="row">
 
+        @await Component.InvokeAsync(typeof(BehtashShirzad.ViewComponents.Products.TopThreeProductViewComponent))
+
+
+    </div>
+</div>
+<!----- End course boxes ----->
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 d-flex justify-content-between">
+            <h6 class="title pb-2">جدید ترین سورس ها</h6>
+            <a class="title pb-2" href="@Url.Action("Sources","Home")">بیشتر</a>
+        </div>
+    </div>
+</div>
 
 
 <!----- Start course boxes ----->
 <div class="container my-3">
     <div class="row">
 
-        @await Component.InvokeAsync(typeof(BehtashShirzad.ViewComponents.TopThreeProductViewComponent))
+        @await Component.InvokeAsync(typeof(BehtashShirzad.ViewComponents.Products.ProductSeperatedComponents.TopThreeSourcesViewComponent))
 
 
     </div>
