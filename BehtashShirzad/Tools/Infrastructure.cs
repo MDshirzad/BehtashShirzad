@@ -57,7 +57,7 @@ namespace BehtashShirzad.Tools
             if (string.IsNullOrEmpty(phone))
                 return Constants.Status.NotCorrect;
           
-                var IranianPatternNumber = "09(1[0-9]|3[1-9]|2[1-9])-?[0-9]{3}-?[0-9]{4}";
+                var IranianPatternNumber = "09(0[1-3]|1[0-9]|3[1-9]|2[1-9])-?[0-9]{3}-?[0-9]{4}";
 
             Regex r = new Regex(IranianPatternNumber);
                 
