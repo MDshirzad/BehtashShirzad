@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BehtashShirzad.ViewComponents
 {
-    public class ProductViewComponent: ViewComponent
+    public class TopThreeProductViewComponent: ViewComponent
     {
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var model =   ProductDAL.GetProducts();
+            var model = await ProductDAL.GetTopThreeProducts();
             return await Task.FromResult((IViewComponentResult)View("~/Views/Components/ProductComponent.cshtml", model));
         }
 

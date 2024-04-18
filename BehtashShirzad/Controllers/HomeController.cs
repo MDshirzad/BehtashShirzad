@@ -25,9 +25,20 @@ namespace BehtashShirzad.Controllers
             return View();
         }
 
-        
+        public IActionResult Products()
+        {
+
+            return View();
+        }
+
+
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult Blog()
         {
             return View();
         }

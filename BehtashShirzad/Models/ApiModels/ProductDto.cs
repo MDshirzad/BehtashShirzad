@@ -9,7 +9,7 @@ namespace BehtashShirzad.Model.ApiModels
         public string? Description { get; set; }
         public decimal Price { get; set; }
         public string Image { get; set; }
-
+        public bool IsVisible { get; set; } 
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this);

@@ -11,6 +11,7 @@
     <div class="row">
         <div class="col-sm-12 d-flex justify-content-between">
             <h6 class="title pb-2">جدیدترین دوره های آموزشی</h6>
+            <a class="title pb-2" href="@Url.Action("Products","Home")">بیشتر</a>
         </div>
     </div>
 </div>
@@ -23,7 +24,7 @@
 <div class="container my-3">
     <div class="row">
 
-        @await Component.InvokeAsync(typeof(BehtashShirzad.ViewComponents.ProductViewComponent))
+        @await Component.InvokeAsync(typeof(BehtashShirzad.ViewComponents.TopThreeProductViewComponent))
 
 
     </div>
