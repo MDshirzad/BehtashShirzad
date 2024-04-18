@@ -14,7 +14,11 @@
         <link rel="stylesheet" href="~/css/bootstrap-rtl.css">
         <link rel="stylesheet" href="~/css/customcss/style.css">
         <link rel="stylesheet" href="~/fonts/all.css">
-   
+     <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+ 
 
 
 </head>
@@ -25,6 +29,7 @@
     var token = Context.Request.Cookies["Token"];
 }
 <body>
+     
     <!----- Start header ----->
     <header class="bg-white">
         <div class="container">
@@ -169,18 +174,12 @@
     
             <div class="collapse navbar-collapse" id="mainmenu">
                 <ul class="navbar-nav pr-0 custom-navbar font-14 text-center">
-                    <li class="nav-item ml-3 custom-nav-item"><a href="index.html" class="nav-link">صفحه اصلی</a></li>
-                    <li class="nav-item ml-3 dropdown custom-nav-item"><a href="#" class="nav-link  dropdown-toggle" data-toggle="dropdown">دوره های آموزشی</a>
+                    <li class="nav-item ml-3 custom-nav-item animate__flash"><a href="@Url.Action("Index","Home")" class="nav-link">صفحه اصلی</a></li>
+                    <li class="nav-item ml-3  custom-nav-item  animate__animated animate__flash animate__infinite animate__slower"><a href="#" class="nav-link">دوره های آموزشی</a></li>
+                    <li class="nav-item ml-3  custom-nav-item animate__animated animate__flash  animate__infinite animate__slower animate__delay-1s"><a href="#" class="nav-link">سورس کد ها</a></li>
 
-                        <div class="dropdown-menu custom-dropdown-menu dropdown-menu-right font-13 text-right">
-                            <a href="course.html" class="dropdown-item border-bottom py-2">دوره متخصص طراحی سایت</a>
-                          
-                        </div>
-
-                    </li>
-                   
                     <li class="nav-item ml-3 custom-nav-item"><a href="blog.html" class="nav-link">بلاگ</a></li>
-                    <li class="nav-item ml-3 custom-nav-item"><a href="contact-us.html" class="nav-link">تماس باما</a></li>
+                    <li class="nav-item ml-3 custom-nav-item"><a href="@Url.Action("ContactUs","Home")" class="nav-link">تماس باما</a></li>
                 </ul>
             </div>
         </div>
@@ -244,7 +243,7 @@
                     </form>
                     <div class="mt-5 social-media">
                         <a href="#"><i class="fab fa-instagram p-1" id="instagram"></i></a>
-                        <a href="#"><i class="fab fa-twitter bg-info p-1"></i></a>
+                      
                         <a href="#"><i class="fab fa-youtube bg-danger p-1"></i></a>
                         <a href="#"><i class="fab fa-telegram bg-primary p-1"></i></a>
                     </div>

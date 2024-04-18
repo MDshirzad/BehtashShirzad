@@ -21,7 +21,7 @@ namespace BehtashShirzad.Model.Context.DAL
                 try
                 { 
 
-                    return cn.Invoices.Include( _=>_.User).Include(_=>_.Products).ThenInclude(product => product.Category).ToFrozenSet();
+                    return cn.Invoices.Include( _=>_.User).Include(_=>_.Products).ThenInclude(product => product.Category).AsNoTracking().ToFrozenSet();
 
                 }
                 catch (Exception ex)
@@ -41,7 +41,7 @@ namespace BehtashShirzad.Model.Context.DAL
                 try
                 {
 
-                    return cn.Invoices.Where(_=>_.User.Username==username).Include(_ => _.User).Include(_ => _.Products).ThenInclude(product => product.Category).ToFrozenSet();
+                    return cn.Invoices.Where(_ => _.User.Username == username).Include(_ => _.User).Include(_ => _.Products).ThenInclude(product => product.Category).AsNoTracking().ToFrozenSet();
 
                 }
                 catch (Exception ex)

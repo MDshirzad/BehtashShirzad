@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Logger;
 using SharedObjects;
 using System.Reflection;
+using System.Collections.Frozen;
 
 namespace BehtashShirzad.Models.Context.DAL
 {
@@ -17,7 +18,7 @@ namespace BehtashShirzad.Models.Context.DAL
             {
                 using (var db = new DbCommiter())
                 {
-                    return db.productCategories;
+                    return db.productCategories.AsNoTracking();
 
                 }
                 

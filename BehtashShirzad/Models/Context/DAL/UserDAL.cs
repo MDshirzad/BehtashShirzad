@@ -22,7 +22,7 @@ namespace BehtashShirzad.Model.Context.DAL
                 try
                 {
 
-                    var userDb =  await cn.Users.Where(_=>_.Username==user.Credential || _.PhoneNumber == user.Credential).FirstOrDefaultAsync();
+                    var userDb =  await cn.Users.Where(_=>_.Username==user.Credential || _.PhoneNumber == user.Credential).AsNoTracking().FirstOrDefaultAsync();
                     if (userDb!= null)
                     {
                         if (userDb.Password == Infrastructure.CreatePassHash(user.Password))
