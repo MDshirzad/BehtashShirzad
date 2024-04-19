@@ -27,15 +27,20 @@ namespace BehtashShirzad.Model.Context.DAL
                     {
                         userDb.lastIp = IpAddress;
                         userDb.lastLoginTime = DateTime.Now.ToString();
-                        await cn.SaveChangesAsync();
+                        
                         if (userDb.Password == Infrastructure.CreatePassHash(user.Password))
                         {
+                            userDb.isLastLoginSuccessfull = true;
+                           
                             if (userDb.isAdmin)
                             {
                                 userDb.Role = "admin";
                             }
+
+                            
                             return userDb;
                         }
+                        userDb.isLastLoginSuccessfull = false;
                     }
                     return null;
 
@@ -44,6 +49,10 @@ namespace BehtashShirzad.Model.Context.DAL
                 {
                     Log.CreateLog(new() { LogType = Constants.LogType.Error,  Description = ex.Message, Extra = ex.InnerException?.Message });
                     return null;
+                }
+                finally
+                {
+                    await cn.SaveChangesAsync();
                 }
             }
 

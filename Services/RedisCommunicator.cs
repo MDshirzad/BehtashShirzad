@@ -30,6 +30,7 @@ namespace Services
                 var ttl = TimeSpan.FromMinutes(2);
              await   db.StringSetAsync(phoneNumber, otpCode);
              await   db.KeyExpireAsync(phoneNumber, ttl);
+                
                 return true;
             }
             catch (Exception)

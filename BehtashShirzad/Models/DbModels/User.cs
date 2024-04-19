@@ -21,6 +21,7 @@ namespace BehtashShirzad.Models.DbModels
         public string PhoneNumber { get; set; }
         public string lastLoginTime { get; set; }   
         public string lastIp { get; set; }
+        public bool isLastLoginSuccessfull { get; set; } = false;
         [JsonIgnore]
         public List<Invoice> invoices { get; set; }
     }
