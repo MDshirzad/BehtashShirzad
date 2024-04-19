@@ -64,20 +64,20 @@
 
                         if (string.IsNullOrEmpty(token))
                         {
-                                            <a href="/Register" class="btn btn-outline-info font-13 vazir-med-fa"><i class="fa fa-user-plus pl-1"></i>ثبت نام</a>
-                                            <a href="/Login" class="btn btn-info font-13 vazir-med-fa mx-2">ورود</a>
+                                                    <a href="/Register" class="btn btn-outline-info font-13 vazir-med-fa"><i class="fa fa-user-plus pl-1"></i>ثبت نام</a>
+                                                    <a href="/Login" class="btn btn-info font-13 vazir-med-fa mx-2">ورود</a>
                         }else{
 
                             var currenUser = Infrastructure.GetCurrentuser(token);
                             if (currenUser != null)
                         {
                            
-                                                <a href="/User" class="btn btn-info font-13 vazir-med-fa mx-2">@currenUser</a>
+                                                        <a href="/User" class="btn btn-info font-13 vazir-med-fa mx-2">@currenUser</a>
                             }
                             else
                             {
-                                                <a href="/Register" class="btn btn-outline-info font-13 vazir-med-fa"><i class="fa fa-user-plus pl-1"></i>ثبت نام</a>
-                                                <a href="/Login" class="btn btn-info font-13 vazir-med-fa mx-2">ورود</a>
+                                                        <a href="/Register" class="btn btn-outline-info font-13 vazir-med-fa"><i class="fa fa-user-plus pl-1"></i>ثبت نام</a>
+                                                        <a href="/Login" class="btn btn-info font-13 vazir-med-fa mx-2">ورود</a>
                             }
                         }
                     }
@@ -103,8 +103,8 @@
                           
                         if (string.IsNullOrEmpty(token))
                         {
-                                            <a href="/Register" class="border-left ml-3"><i class="fa fa-user-plus ml-3"></i></a>
-                                            <a href="/Login" class="border-left ml-3"><i class="fa fa-lock ml-3"></i></a>
+                                                    <a href="/Register" class="border-left ml-3"><i class="fa fa-user-plus ml-3"></i></a>
+                                                    <a href="/Login" class="border-left ml-3"><i class="fa fa-lock ml-3"></i></a>
                         }
                         else
                         {
@@ -113,12 +113,12 @@
                             if (currenUser != null)
                             {
 
-                                                <a href="/User" class="btn btn-info font-13 vazir-med-fa mx-2">@currenUser</a>
+                                                        <a href="/User" class="btn btn-info font-13 vazir-med-fa mx-2">@currenUser</a>
                             }
                             else
                             {
-                                                <a href="/Register" class="border-left ml-3"><i class="fa fa-user-plus ml-3"></i></a>
-                                                <a href="/Login" class="border-left ml-3"><i class="fa fa-lock ml-3"></i></a>
+                                                        <a href="/Register" class="border-left ml-3"><i class="fa fa-user-plus ml-3"></i></a>
+                                                        <a href="/Login" class="border-left ml-3"><i class="fa fa-lock ml-3"></i></a>
                             }
                         }
                     }
@@ -131,7 +131,7 @@
                         <div class="dropdown-menu  dropdown-cart mt-3 mx-5">
                             <ul class="list-unstyled CartData">
                               
-                                
+                               
                             </ul>
                         </div>
                     </a>
@@ -276,31 +276,31 @@
 
         function fetchCartData() {
 
-            
-        var basket = localStorage.getItem("cardData");
-     
-            if (basket == null || basket=="") {
+
+            var basket = localStorage.getItem("cardData");
+
+            if (basket == null || basket == "") {
                 $(".CartData").append(`<li> <span>سبد خرید خالی است</span></li>`)
-            return
+                return
             }
-                total = 0
-                data = $.parseJSON(basket)
-               
-                $(".CardData").empty()
-                $.each(data, function (index, element) {
+            total = 0
+            data = $.parseJSON(basket)
 
-           
-                    strCards = `<li><img src=${element["img"]} class="m-1 ml-3" ><div class="float-right" ><small class=" mt-3 mr-2 d-block" > ${element["name"]}</small></div> </li>`
-                    $(".CartData").append(strCards)
-                    total += parseInt(element["price"])
-                });
+            $(".CardData").empty()
+            $.each(data, function (index, element) {
 
-                $(".CartData").append(`<li><button class="btn btn-info m-1 ml-3 font-12">پرداخت</button><div class="float-right"> <small class=" mt-3 mr-2 d-block">قیمت کل : ${total} تومان</small>
-                                                    </div>
-                                                </li>`)
-               
-               
-             
+
+                strCards = `<li><div class="float-right" ><small class=" mt-3 mr-2 d-block" > ${element["name"]}</small></div> </li>`
+                $(".CartData").append(strCards)
+                total += parseInt(element["price"])
+            });
+
+            $(".CartData").append(`<li><button class="btn btn-info m-1 ml-3 font-12">پرداخت</button><div class="float-right"> <small class=" mt-3 mr-2 d-block">قیمت کل : ${total} تومان</small>
+                                                                    </div>
+                                                                </li>`)
+
+       
+
           
           
         }

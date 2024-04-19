@@ -154,7 +154,33 @@ namespace BehtashShirzad.Model.Context.DAL
                 return false;
             }
         }
+        public static async Task<object> GetProductById(int Id)
+        {
 
+            using (var cn = new DbCommiter())
+            {
+                try
+                {
+                    var res =   await cn.Products
+                        .Where(_ => _.IsVisible==true && _.Id == Id)
+                        .Select(_ => new {
+                            Name = _.Name,
+                            Price = _.Price,
+                            CategoryName = _.Category.Name
+                        })
+                        .FirstOrDefaultAsync();
+                    return res;
+
+                }
+                catch (Exception ex)
+                {
+                    Log.CreateLog(new() { LogType = Constants.LogType.Error, Description = ex.Message, Extra = ex.InnerException?.Message });
+
+                    return null;
+                }
+            }
+
+        }
         static bool _IsExist(Product p ) {
         using(var cn = new DbCommiter())
                 return  cn.Products.AnyAsync(_=>_.Name==p.Name).Result;
