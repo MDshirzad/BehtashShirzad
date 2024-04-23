@@ -13,12 +13,12 @@ if(Model.Count()>1){
         <div class="sub-layer">
             <img src="@item?.image" alt="bootstrap" class="img-fluid card-img-top">
             <div class="over-layer">
-                <a href="course.html" class="btn btn-primary"> مشاهده و خرید </a>
+                            <a href="/Product/@item?.Id" class="btn btn-primary"> مشاهده و خرید </a>
                
             </div>
         </div>
         <div class="card-body">
-            <a href="course.html" class="card-link"> @item?.Name </a>
+                        <a href="/Product/@item?.Id" class="card-link"> @item?.Name </a>
             <p class="text-justify card-text vazir font-14 mt-3">
               @item?.Description
             </p>
