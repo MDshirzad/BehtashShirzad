@@ -6,8 +6,9 @@
 
     var product = ViewBag.Product;
     var name = product?.Name;
+    var id = product?.Id;
     var price = product?.Price;
-   
+
 }
 
 <div class="container">
@@ -16,14 +17,14 @@
         <div class="col-md-4 mb-3">
             <img src="images/html-2.png" class="img-fluid" alt="HTML">
             <ul class="list-group text-center list-group-flush custom-list-group">
-                <li class="list-group-item font-13">عنوان دوره : @name </li>
+                <li  class="list-group-item font-13">عنوان دوره : <span id="ProductTitle">@name</span> </li>
                 <li class="list-group-item font-13">مدرس : علی نوروزی</li>
                 <li class="list-group-item font-13">سطح دوره : مقدماتی تا پیشرفته</li>
                 <li class="list-group-item font-13">وضعیت دوره : درحال برگزاری</li>
                 <li class="list-group-item font-13">قسمت های ارسالی : 12</li>
-                <li class="list-group-item font-13">قیمت دوره : @price تومان</li>
+                <li   class="list-group-item font-13">قیمت دوره :<span id="ProductPrice"> @price</span> تومان</li>
             </ul>
-            <button class="btn btn-info btn-block mt-3 py-2 font-12"><i class="fa fa-cart-plus align-middle"></i> افزودن به سبد خرید</button>
+            <button class="btn btn-info btn-block mt-3 py-2 font-12" onclick="addToCart()"><i class="fa fa-cart-plus align-middle"></i> افزودن به سبد خرید</button>
         </div>
 
         <div class="col-md-8">
@@ -210,3 +211,6 @@
     </div>
 </div>
 
+@section Scripts {
+    <script src="~/js/cart.js"></script>
+}

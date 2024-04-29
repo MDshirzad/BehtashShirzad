@@ -78,8 +78,16 @@ namespace BehtashShirzad.Model.Context.DAL
                 try
                 {
 
-                    var res = cn.Products.Where(_ => _.IsVisible).Include(_ => _.Category).Where(_ => _.Category.Name.ToLower() == "source").OrderByDescending(_=>_.Id).ToList().TakeLast(3);
-                    return res;
+                    var res = cn.Products.Where(_ => _.IsVisible).Include(_ => _.Category).Where(_ => _.Category.Name.ToLower() == "source").OrderByDescending(_ => _.Id).ToList();
+                    
+                    if (res.Count < 3)
+                    {
+                        return res; // Return the entire list if there are less than 3 items.
+                    }
+                    else
+                    {
+                        return res.TakeLast(3); // Otherwise, return the last 3 items.
+}
                 }
                 catch (Exception ex)
                 {
@@ -101,7 +109,15 @@ namespace BehtashShirzad.Model.Context.DAL
 
 
                     var val = await cn.Products.Where(_ => _.IsVisible == true).OrderByDescending(_=>_.Id).ToListAsync();
-                return val.TakeLast(10);
+               
+                    if (val.Count < 3)
+                    {
+                        return val; // Return the entire list if there are less than 3 items.
+                    }
+                    else
+                    {
+                        return val.TakeLast(10);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -123,7 +139,16 @@ namespace BehtashShirzad.Model.Context.DAL
 
 
                     var val = await cn.Products.Where(_ => _.IsVisible == true).OrderByDescending(_ => _.Id).ToListAsync();
-                    return val.TakeLast(3);
+                  
+
+                    if (val.Count < 3)
+                    {
+                        return val; // Return the entire list if there are less than 3 items.
+                    }
+                    else
+                    {
+                        return val.TakeLast(3); // Otherwise, return the last 3 items.
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -166,6 +191,7 @@ namespace BehtashShirzad.Model.Context.DAL
                         .Select(_ => new {
                             Name = _.Name,
                             Price = _.Price,
+                            Id=_.Id,
                             CategoryName = _.Category.Name
                         })
                         .FirstOrDefaultAsync();

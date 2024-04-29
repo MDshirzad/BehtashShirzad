@@ -7,7 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\cart.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\cart.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Views\Admin\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\cart.js" />
   </ItemGroup>
 
   <ItemGroup>
