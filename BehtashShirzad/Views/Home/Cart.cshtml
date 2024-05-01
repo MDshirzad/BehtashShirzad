@@ -1,0 +1,35 @@
+﻿ 
+@section cartCss{
+    <link href="~/css/customcss/cart.css" rel="stylesheet"/>
+}
+
+<div class="cart-container">
+    <h1>سبد خرید</h1>
+    <div class="CartData"> 
+
+    </div>
+    <div class="cart-summary">
+    
+
+        <div  class="summary-details">
+             
+          
+        </div>
+        <button class="checkout-btn">خرید</button>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script src="~/js/cart.js"></script>
+    <script>
+        $(document).ready(function () {
+           
+
+            fetchCartData();
+        });
+
+    </script>
+}
+
