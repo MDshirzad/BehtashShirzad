@@ -66,42 +66,42 @@ function fetchCartData() {
 
         $(".CartData").append(`<li> <span>سبد خرید خالی است</span></li>`)
         $(".checkout-btn").hide();
+        $("#totalPrice").text(0) 
         return
     }
 
     total = 0
-
-    debugger
+     
     data = $.parseJSON(basket)
     
-
+    
     $.each(data, function (index, element) {
 
-var carddata = `
-        <div class="cart-items">
-            <div class="cart-item">
-                <img src="product1.jpg" alt="Product 1"/>
-                    <div class="item-details">
-                    <a href="${element["url"]}">${element["Title"]}</a>
-                        <p>${parseInt(element["Price"])} تومان</p>
-                        <button class="remove-btn" onclick="removeFromCart('${element["Title"]}')">حذف</button>
-                    </div>
-            </div>
+        var carddata =
+                        `<div class="cart-items">
+                            <div class="cart-item">
+                                <img src="product1.jpg" alt="Product 1"/>
+                                    <div class="item-details">
+                                    <a href="${element["url"]}">${element["Title"]}</a>
+                                        <p>${parseInt(element["Price"])} تومان</p>
+                                        <button class="remove-btn" onclick="removeFromCart('${element["Title"]}')">حذف</button>
+                                     </div>
+                            </div>
+                        </div>`
 
-        </div>
-        `
-         
-         
         $(".CartData").append(carddata)
         total += parseInt(element["Price"])
     });
-     
+
+   
+    $("#totalPrice").text(total) 
     if (total == null || total == 0   ) {
         $(".checkout-btn").hide();
+      
     }
+   
 
-    var totalstr = `<p  >مبلغ نهایی: <span class="total-price">${total} تومان</span></p>`
-    $(".summary-details").append(totalstr)
+     
 
 
 }
