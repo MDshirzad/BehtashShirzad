@@ -11,7 +11,7 @@
         <h2>Admin Panel</h2>
      
     </header>
-
+    <div class="scrollable-table">
 
     <table class="grid-table">
         <thead>
@@ -22,27 +22,41 @@
                 <th>Description</th>
                 <th>IsVisible</th>
                 <th>Category</th>
-               
+                    <th></th>
             </tr>
         </thead>
         <tbody>
             <!-- Example rows with user data -->
 
             @{
-                            @model IEnumerable<BehtashShirzad.Models.DbModels.Product>
+                                        @model IEnumerable<BehtashShirzad.Models.DbModels.Product>
                 
                 foreach (var item in Model)
                 {
-                                <tr>
+                                            <tr>
 
-                                    <td>  <img src="@item.image" width="50px" height="50px" /></td>
-                                    <td>@item.Name</td>
-                                    <td>@item.Price</td>
-                                    <td>@item.Description</td>
-                                    <td>@item.IsVisible</td>
-                                    <td>@item.Category.Name</td>
-
-                                </tr>
+                                                <td>  <img src="@item.image" width="50px" height="50px" /></td>
+                                                <td>@item.Name</td>
+                                                <td>@item.Price</td>
+                                                <td>@item.Description</td>
+                                                <td>@item.IsVisible</td>
+                                                <td>@item.Category.Name</td>
+                                        @{
+                                if(item.IsVisible){
+                                                            <td>
+                                                                <button class="btn-danger" onclick="ChangeVisibility('@item.Name','False')">Set to Invisible</button>
+                                                            </td>
+                                }
+                                else
+                                {
+                                                            <td>
+                                                                <button class="btn-success" onclick="ChangeVisibility('@item.Name','True')">Set to Visible</button>
+                                                            </td>
+                                }
+                                        }
+                                              
+                                                       
+                                            </tr>
                 }
             }
       @*   <td>
@@ -52,20 +66,27 @@
             <!-- Add more rows as needed -->
         </tbody>
     </table>
+    </div>
+
     <div id="createProduct" class="modal-background" style="display:none;">
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <p>Please enter Data:</p>
-            <input type="text" id="ProductName" placeholder="Product Name">
-            <input type="text" id="ProductDescription" placeholder="Description">
-            <input type="text" id="ProductPrice" placeholder="Price">
-            <input type="checkbox" id="ProductVisibility"  checked>
-            <input type="text" id="ProductImage" placeholder="Image ">
-            <select name="category" id="ProductCategory">
+            <input type="text" id="ProductName" placeholder="Product Name" style="margin-top:10px">
+            <input type="text" id="ProductDescription" placeholder="Description" style="margin-top:10px">
+            <input type="text" id="ProductPrice" placeholder="Price" style="margin-top:10px">
+            <label for="ProductVisibility" style="margin-top:5px">
+                Product Visibility
+                <input type="checkbox" id="ProductVisibility" checked style="margin-top:10px">
+            </label>
+            
+            <input type="text" id="ProductImage" placeholder="Image" style="margin-top:10px">
+            <label for="ProductCategory" style="margin-top:5px">Product Category</label>
+            <select name="ProductCategory" id="ProductCategory" style="margin-top:10px">
                 <option value="Source">source</option>
                 <option value="Course">course</option>
             </select>
-            <button onclick="CreateProduct()">Create Product</button>
+            <button onclick="CreateProduct()" style="margin-top:10px">Create Product</button>
         </div>
     </div>
    
@@ -76,14 +97,36 @@
              
              
              <script>
-               
+
+                 function ChangeVisibility(name,status) {
+
+
+            dataToSend =JSON.stringify({ Name: name, Visible: status })
+
+            $.ajax({
+                url: "/Product/ChangeVisibility",
+                type: "POST",
+                contentType: "application/json",
+                data: dataToSend
+            }).done(function (data, textStatus, jqXHR) {
+                if (data.includes("html")) {
+                    window.location = "/Login";
+                } else if (data == "Ok") {
+                    alert("Visibility Changed")
+                } else if (data == "Error") {
+                    alert("Error");
+                }
+                
+            });
+
+                 }
 
                  function ShowModal() {
 
                      document.getElementById('createProduct').style.display = 'block';
 
                      document.getElementsByClassName('close-button')[0].onclick = function () {
-                         document.getElementById('passwordModal').style.display = 'none';
+                document.getElementById('createProduct').style.display = 'none';
                      }
 
 

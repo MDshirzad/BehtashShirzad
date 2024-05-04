@@ -236,6 +236,31 @@ namespace BehtashShirzad.Model.Context.DAL
         }
 
 
+        public static async Task<bool> ChangeVisibility(string productName,bool Isvisible)
+        {
+
+            using (var cn = new DbCommiter())
+            {
+                try
+                {
+                    var res = await cn.Products
+                        .Where(_ => _.Name == productName)
+                        .FirstOrDefaultAsync();
+                    res.IsVisible = Isvisible;
+                    await cn.SaveChangesAsync();
+                    return true;
+
+                }
+                catch (Exception ex)
+                {
+                    Log.CreateLog(new() { LogType = Constants.LogType.Error, Description = ex.Message, Extra = ex.InnerException?.Message });
+
+                    return false;
+                }
+            }
+
+        }
+
         public static async Task<Product> GetProductByName(string name)
         {
 

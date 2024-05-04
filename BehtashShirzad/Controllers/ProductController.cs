@@ -1,5 +1,6 @@
 ﻿using BehtashShirzad.Model.ApiModels;
 using BehtashShirzad.Model.Context.DAL;
+using BehtashShirzad.Models.ApiModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BehtashShirzad.Controllers
@@ -26,7 +27,23 @@ namespace BehtashShirzad.Controllers
 
         }
 
+        [HttpPost()]
+        public async Task<string> ChangeVisibility([FromBody] ChangeProductVisibilityDto changeProductVisibilityDto)
+        {
+            bool visibility = false;
+            if (changeProductVisibilityDto.Visible.Equals("True"))
+            {
+                visibility = true;
+            }
 
+            var result = await ProductDAL.ChangeVisibility(changeProductVisibilityDto.Name, visibility);
+            if (result == true) {
+                return "Ok";
+            
+            }
+
+            return "Error";
+        }
 
         [HttpPost()]
         public async Task<string> Create([FromBody] ProductDto productdt)
