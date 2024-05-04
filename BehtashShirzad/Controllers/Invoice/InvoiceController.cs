@@ -25,7 +25,10 @@ namespace BehtashShirzad.Controllers.Invoice
                     
                     products.Add(await ProductDAL.GetProductByName(item));  
                 }
-            
+                if (products.Count<=0)
+                {
+                    return NotFound();
+                }
             var res =await InvoiceDAL.CreateInvoice(new() { User=new() {  Id=Convert.ToInt32(currentUser)},Products= products });
             switch (res)
             {

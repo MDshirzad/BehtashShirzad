@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+ 
+<div class="admin-wrapper">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h1>Admin Panel</h1>
+        <ul>
+            <li><a href="@Url.Action("Index","Admin")">Dashboard</a></li>
+            <li><a href="@Url.Action("Users","Admin")">Users</a></li>
+            <li><a href="@Url.Action("Products","Admin")">Products</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header>
+            <h2>Dashboard</h2>
+            <div class="user-wrapper">
+                <img src="user-image.jpg" alt="User Profile" class="user-image">
+                <div>
+                    <h4>John Doe</h4>
+                    <small>Admin</small>
+                </div>
+            </div>
+        </header>
+        <div class="info">
+            <!-- Content will go here -->
+            <p>Welcome to your dashboard.</p>
+        </div>
+    </div>
+</div>
+
+ 
