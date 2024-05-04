@@ -1,6 +1,7 @@
 ﻿
 using BehtashShirzad.Controllers.Attrubutes;
 using BehtashShirzad.Model.Context.DAL;
+using BehtashShirzad.Models.ApiModels;
 using BehtashShirzad.Models.DbModels;
 using BehtashShirzad.Tools;
 using Microsoft.AspNetCore.Authorization;
@@ -26,8 +27,29 @@ namespace BehtashShirzad.Controllers.User
         }
        
 
-        
+        public async Task<string> VerifyUser([FromBody] VerifyUserInAdminModel phone)
+        {
 
-         
+            var veruser = await UserDAL.VerifyUser(phone.phone.ToString());
+            if (veruser)
+            {
+                return "Ok";
+            }
+            return "Error";
+        }
+
+        public async Task<string> ChangePassword([FromBody] ChangePasswordUser cred)
+        {
+
+            var res = await UserDAL.ChangePassword(cred);
+            if (res)
+            {
+                return "Ok";
+            }
+            return "Error";
+        }
+
+
+
     }
 }

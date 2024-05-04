@@ -41,29 +41,119 @@
            
             @{
                  
-                @foreach(var item in Model){
-                <tr>
-                <td>@item.Username</td>
-                <td>@item.Email</td>
-                <td>@item.PhoneNumber</td>
-                <td>@item.isVerified</td>
-                <td>@item.lastIp</td>
-                <td>@item.isLastLoginSuccessfull</td>
-                <td>@item.lastLoginTime</td>
-
-            </tr>
+                                    @foreach(var item in Model){
+                                    <tr>
+                                    <td>@item.Username</td>
+                                    <td>@item.Email</td>
+                                    <td id="PhoneNumber_@item.Id">@item.PhoneNumber</td>
+                                    <td>@item.isVerified</td>
+                                    <td>@item.lastIp</td>
+                                    <td>@item.isLastLoginSuccessfull</td>
+                                    <td>@item.lastLoginTime</td>
+                                    <td>
+                                    @{
+                    if (item.isVerified)
+                        {
+                                                                 <button class="  btn-success" disabled>Verified</button>
+                        }
+                     else
+                         {
+                                                            <button class="action-button " onclick="verifyUser($('#PhoneNumber_@item.Id').text())">Verify</button>
+                         }
+                                    }
+                            <button class=" openModal btn-danger" onclick="changePassword($('#PhoneNumber_@item.Id').text())">Change Password</button>
+                                    
+                                    </td>
+                                </tr>
+                    
                 }
-
-            // <td>
-            //     <button class="action-button">Edit</button>
-            //     <button class="action-button">Delete</button>
-            // </td>
+         
                
            
             }
 
-          
+            
             <!-- Add more rows as needed -->
         </tbody>
     </table>
-</div>
+   
+    <!-- Modal structure -->
+    <div id="passwordModal" class="modal-background" style="display:none;">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <p>Please enter your new password:</p>
+            <input type="password" id="newPassword" placeholder="New password">
+            <button onclick="submitNewPassword()">Change Password</button>
+        </div>
+    </div>
+
+                           @section adminUserScript{
+                               <script>
+                                   function verifyUser(number) {
+
+            var dataTosend = JSON.stringify({ phone: String(number) })
+            console.log(dataTosend)
+            $.ajax({
+                url: "/User/VerifyUser",
+                type: "POST",
+                contentType: "application/json",
+                data: dataTosend
+            }).done(function (data, textStatus, jqXHR) {
+                if (data.includes("html")) {
+                    window.location = "/Login";
+                } else if (data == "Ok") {
+                    location.reload();
+
+                } else if (data == "Error") {
+                    alert("Error")
+                }
+            });
+                                   
+                                   }
+
+
+            function changePassword(number) {
+                // Open the modal
+                document.getElementById('passwordModal').style.display = 'block';
+
+                // Handle closing the modal
+                document.getElementsByClassName('close-button')[0].onclick = function () {
+                    document.getElementById('passwordModal').style.display = 'none';
+                }
+
+                // Handle clicking outside the modal
+                window.onclick = function (event) {
+                    var modal = document.getElementById('passwordModal');
+                    if (event.target == modal) {
+                        modal.style.display = 'none';
+                    }
+                }
+
+                // Set up submission of new password
+                window.submitNewPassword = function () {
+                    var newPassword = document.getElementById('newPassword').value;
+                    var dataToSend = JSON.stringify({ phone: String(number), password: newPassword });
+
+                    $.ajax({
+                        url: "/User/ChangePassword",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: dataToSend
+                    }).done(function (data, textStatus, jqXHR) {
+                        if (data.includes("html")) {
+                            window.location = "/Login";
+                        } else if (data == "Ok") {
+                            alert("Password Changed Successfully")
+                        } else if (data == "Error") {
+                            alert("Error");
+                        }
+                        document.getElementById('passwordModal').style.display = 'none'; // Close modal on success or error
+                    });
+                }
+            }
+
+
+                               </script>
+
+  
+                           }
