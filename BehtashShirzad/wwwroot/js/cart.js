@@ -4,8 +4,8 @@
     var price = $("#ProductPrice").text()
     var Title = $("#ProductTitle").text()
     var url = window.location.href;
-
-    dto = { "Price": price, "Title": Title, "Url": url }
+    var Image = $("#productImage").prop("src") 
+    dto = { "Price": price, "Title": Title, "Url": url, image: Image }
     // Retrieve cart from localStorage
     var cart = localStorage.getItem("cart");
 
@@ -80,9 +80,9 @@ function fetchCartData() {
         var carddata =
                         `<div class="cart-items">
                             <div class="cart-item">
-                                <img src="product1.jpg" alt="Product 1"/>
+                                <img src="${element["image"]}" alt="${element["Title"]}" style="margin-left:10px"/>
                                     <div class="item-details">
-                                    <a href="${element["url"]}">${element["Title"]}</a>
+                                    <a href="${element["Url"]}">${element["Title"]}</a>
                                         <p>${parseInt(element["Price"])} تومان</p>
                                         <button class="remove-btn" onclick="removeFromCart('${element["Title"]}')">حذف</button>
                                      </div>
@@ -107,4 +107,32 @@ function fetchCartData() {
 }
 
 
- 
+function pay() {
+    var names = [];
+    var data = JSON.parse(localStorage.getItem("cart"));
+
+    console.log("Retrieved data:", data); // Debug output
+
+    if (data) {
+        data.forEach(function (element) {
+            names.push(element["Title"]);
+        });
+    } else {
+        console.log('No data found in local storage');
+        return; // Exit function if no data
+    }
+
+    var dataToSend = JSON.stringify({ products: names });
+    console.log("Sending data:", dataToSend); // More debug output
+
+    $.ajax({
+        url: "/Invoice/Create",
+        type: "POST",
+        contentType: "application/json",
+        data: dataToSend
+    }).done(function (data, textStatus, jqXHR) {
+        if (data.includes("html")) {
+            window.location = "/Login";
+        }
+    });
+}

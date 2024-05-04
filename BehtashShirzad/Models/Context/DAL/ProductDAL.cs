@@ -179,6 +179,8 @@ namespace BehtashShirzad.Model.Context.DAL
                 return false;
             }
         }
+
+
         public static async Task<object> GetProductById(int Id)
         {
 
@@ -192,6 +194,7 @@ namespace BehtashShirzad.Model.Context.DAL
                             Name = _.Name,
                             Price = _.Price,
                             Id=_.Id,
+                            Image = _.image,
                             CategoryName = _.Category.Name
                         })
                         .FirstOrDefaultAsync();
@@ -207,6 +210,31 @@ namespace BehtashShirzad.Model.Context.DAL
             }
 
         }
+
+
+        public static async Task<Product> GetProductByName(string name)
+        {
+
+            using (var cn = new DbCommiter())
+            {
+                try
+                {
+                    var res = await cn.Products
+                        .Where(_ => _.IsVisible == true && _.Name == name)
+                        .FirstOrDefaultAsync();
+                    return res;
+
+                }
+                catch (Exception ex)
+                {
+                    Log.CreateLog(new() { LogType = Constants.LogType.Error, Description = ex.Message, Extra = ex.InnerException?.Message });
+
+                    return null;
+                }
+            }
+
+        }
+
         static bool _IsExist(Product p ) {
         using(var cn = new DbCommiter())
                 return  cn.Products.AnyAsync(_=>_.Name==p.Name).Result;

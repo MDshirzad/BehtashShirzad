@@ -5,8 +5,8 @@ namespace BehtashShirzad.Model.ApiModels
 {
     public class InvoiceDto:IBaseDto
     {
-        
-        public int[] products { get; set; }
+        [JsonProperty("products")]
+        public string[] products { get; set; }
 
         public override string ToString()
         {

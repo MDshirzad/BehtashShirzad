@@ -8,7 +8,7 @@
     var name = product?.Name;
     var id = product?.Id;
     var price = product?.Price;
-
+    var img = product?.Image;
 }
 
 <div class="container">
@@ -43,8 +43,8 @@
 
                             <h1 class="mb-3 text-info">آموزش HTML</h1>
 
-                            <video src="" controls class="embed-responsive embed-responsive-item"></video>
-
+                            @* <video src="" controls class="embed-responsive embed-responsive-item"></video> *@
+                            <img src="@img" id="productImage" class="embed-responsive embed-responsive-item" />
                             <p class="text-justify course-text vazir font-14 my-5">
                                 برای اینکه وارد دنیای طراحی وب شوید اولین چیزی که باید با آن آشنا شوید HTML
                                 است، HTML یک زبانه نشانگذاری برای ایجاد وبسایت ها است
