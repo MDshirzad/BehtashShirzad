@@ -1,9 +1,11 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace BehtashShirzad.Models.DbModels
 {
     public class Product
     {
+        public int  CategoryId { get;set; }
         public ProductCategory Category { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }

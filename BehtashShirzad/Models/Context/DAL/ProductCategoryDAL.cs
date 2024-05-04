@@ -32,6 +32,26 @@ namespace BehtashShirzad.Models.Context.DAL
         }
 
 
+
+        public static  ProductCategory  GetProductCategoryByName(string category)
+        {
+            try
+            {
+                using (var db = new DbCommiter())
+                {
+                    return db.productCategories.Where(_ => _.Name.ToLower() == category.ToLower()).FirstOrDefault();
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Log.CreateLog(new() { LogType = Constants.LogType.Error, Description = ex.Message, Extra = ex.InnerException?.Message });
+                return null;
+            }
+
+        }
+
         public static async Task<bool>  CreateProductCategory(ProductCategory productct)
         {
             try

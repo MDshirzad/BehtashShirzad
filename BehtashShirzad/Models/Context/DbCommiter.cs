@@ -30,7 +30,12 @@ namespace BehtashShirzad.Model.Context
                 property.SetScale(2);
             }
 
-            // Additional configuration as needed
+            modelBuilder.Entity<ProductCategory>()
+    .HasKey(c => c.Id);
+
+            modelBuilder.Entity<ProductCategory>()
+                .Property(p => p.Id)
+                .ValueGeneratedOnAdd();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

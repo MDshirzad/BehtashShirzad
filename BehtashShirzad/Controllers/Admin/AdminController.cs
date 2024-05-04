@@ -18,7 +18,7 @@ namespace BehtashShirzad.Controllers.Admin
 
         public IActionResult Products()
         {
-            var products = ProductDAL.GetProducts();
+            var products = ProductDAL.GetProductsAdmin();
             return View(products);
         }
     }

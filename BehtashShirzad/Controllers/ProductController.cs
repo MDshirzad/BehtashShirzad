@@ -1,4 +1,5 @@
-﻿using BehtashShirzad.Model.Context.DAL;
+﻿using BehtashShirzad.Model.ApiModels;
+using BehtashShirzad.Model.Context.DAL;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BehtashShirzad.Controllers
@@ -24,5 +25,31 @@ namespace BehtashShirzad.Controllers
             return Redirect("/Home/Products");
 
         }
+
+
+
+        [HttpPost()]
+        public async Task<string> Create([FromBody] ProductDto productdt)
+        {
+            
+            if (productdt == null)
+            {
+                HttpContext.Response.StatusCode = 400;
+                return "Error";
+            }
+            
+            var product = await ProductDAL.CreateProduct(productdt);
+            if (product )
+            {
+                HttpContext.Response.StatusCode = 200;
+                return "Ok";
+                
+
+            }
+            HttpContext.Response.StatusCode = 500;
+            return "Error";
+
+        }
+
     }
 }

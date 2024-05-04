@@ -5,6 +5,7 @@ using System.Collections.Frozen;
 using Logger;
 using SharedObjects;
 using System.Reflection;
+using BehtashShirzad.Models.Context.DAL;
 
 namespace BehtashShirzad.Model.Context.DAL
 {
@@ -19,6 +20,26 @@ namespace BehtashShirzad.Model.Context.DAL
                 {
 
                     return cn.Products.Where(_=>_.IsVisible).Include(_=>_.Category).ToFrozenSet();
+
+                }
+                catch (Exception ex)
+                {
+                    Log.CreateLog(new() { LogType = Constants.LogType.Error, Description = ex.Message, Extra = ex.InnerException?.Message });
+
+                    return Enumerable.Empty<Product>();
+                }
+            }
+
+        }
+        public static IEnumerable<Product> GetProductsAdmin()
+        {
+
+            using (var cn = new DbCommiter())
+            {
+                try
+                {
+
+                    return cn.Products.Include(_ => _.Category).ToFrozenSet();
 
                 }
                 catch (Exception ex)
@@ -163,14 +184,17 @@ namespace BehtashShirzad.Model.Context.DAL
         public static async Task<bool> CreateProduct(ProductDto p) {
             try
             {
-                var product = new Product() { Description=p.Description,Name=p.Name,Price=p.Price,image=p.Image};
+                var category = ProductCategoryDAL.GetProductCategoryByName(p.Category);
+                var product = new Product() { Description=p.Description,Name=p.Name,Price=p.Price,image=p.Image,CategoryId= category.Id,IsVisible=p.IsVisible};
                 
             if (_IsExist(product)) { return false; }
             using(var cn = new DbCommiter())
             {
-              await  cn.Products.AddAsync(product);
+                   
+                    await  cn.Products.AddAsync(product);
                await cn.SaveChangesAsync();
-                return true;
+                    
+                    return true;
             }
             }
             catch (Exception ex)

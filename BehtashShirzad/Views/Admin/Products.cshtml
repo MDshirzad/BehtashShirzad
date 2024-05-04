@@ -9,45 +9,40 @@
         <li><a href="@Url.Action("Index","Admin")" class="text-white">Dashboard</a></li>
         <li><a href="@Url.Action("Users","Admin")" class="text-white">Users</a></li>
         <h2>Admin Panel</h2>
-        <div class="user-wrapper">
-           
-            <div>
-                <h4>Admin Name</h4>
-                <small>admin@example.com</small>
-            </div>
-        </div>
+     
     </header>
 
 
     <table class="grid-table">
         <thead>
             <tr>
+                <th></th>
                 <th>Name</th>
                 <th>Price</th>
                 <th>Description</th>
                 <th>IsVisible</th>
                 <th>Category</th>
-                <th></th>
+               
             </tr>
         </thead>
         <tbody>
             <!-- Example rows with user data -->
 
             @{
-                @model IEnumerable<BehtashShirzad.Models.DbModels.Product>
+                            @model IEnumerable<BehtashShirzad.Models.DbModels.Product>
                 
                 foreach (var item in Model)
                 {
-                    <tr>
+                                <tr>
 
-                        <td>  <img src="@item.image" width="50px" height="50px" /></td>
-                        <td>@item.Name</td>
-                        <td>@item.Price</td>
-                        <td>@item.Description</td>
-                        <td>@item.IsVisible</td>
-                        <td>@item.Category.Name</td>
+                                    <td>  <img src="@item.image" width="50px" height="50px" /></td>
+                                    <td>@item.Name</td>
+                                    <td>@item.Price</td>
+                                    <td>@item.Description</td>
+                                    <td>@item.IsVisible</td>
+                                    <td>@item.Category.Name</td>
 
-                    </tr>
+                                </tr>
                 }
             }
       @*   <td>
@@ -57,4 +52,78 @@
             <!-- Add more rows as needed -->
         </tbody>
     </table>
+    <div id="createProduct" class="modal-background" style="display:none;">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <p>Please enter Data:</p>
+            <input type="text" id="ProductName" placeholder="Product Name">
+            <input type="text" id="ProductDescription" placeholder="Description">
+            <input type="text" id="ProductPrice" placeholder="Price">
+            <input type="checkbox" id="ProductVisibility"  checked>
+            <input type="text" id="ProductImage" placeholder="Image ">
+            <select name="category" id="ProductCategory">
+                <option value="Source">source</option>
+                <option value="Course">course</option>
+            </select>
+            <button onclick="CreateProduct()">Create Product</button>
+        </div>
+    </div>
+   
+    <button onclick="ShowModal()">Create Product</button>
 </div>
+
+             @section adminUserScript{
+             
+             
+             <script>
+               
+
+                 function ShowModal() {
+
+                     document.getElementById('createProduct').style.display = 'block';
+
+                     document.getElementsByClassName('close-button')[0].onclick = function () {
+                         document.getElementById('passwordModal').style.display = 'none';
+                     }
+
+
+                     window.onclick = function (event) {
+                         var modal = document.getElementById('createProduct');
+                         if (event.target == modal) {
+                             modal.style.display = 'none';
+                         }
+                     }
+
+                     window.CreateProduct = function () {
+                         var Name = document.getElementById('ProductName').value;
+
+                         var Description = document.getElementById('ProductDescription').value;
+                         var Image = document.getElementById('ProductImage').value;
+                var checkbox = document.getElementById('ProductVisibility').checked;
+                 
+                         var Price = document.getElementById('ProductPrice').value;
+                         var category = document.getElementById('ProductCategory').value;
+                var dataToSend = JSON.stringify({ name: Name, description: Description, price: Price, Category: category, image: Image });
+                console.log(checkbox)
+                 
+
+                         $.ajax({
+                             url: "/Product/Create",
+                             type: "POST",
+                             contentType: "application/json",
+                             data: dataToSend
+                         }).done(function (data, textStatus, jqXHR) {
+                             if (data.includes("html")) {
+                                 window.location = "/Login";
+                             } else if (data == "Ok") {
+                                 alert("Product Created")
+                             } else if (data == "Error") {
+                                 alert("Error");
+                             }
+                             document.getElementById('createProduct').style.display = 'none'; // Close modal on success or error
+                         });
+
+                     }
+                 }
+             </script>
+             }
