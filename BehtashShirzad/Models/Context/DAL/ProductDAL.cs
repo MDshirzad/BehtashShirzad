@@ -18,7 +18,7 @@ namespace BehtashShirzad.Model.Context.DAL
                 try
                 {
 
-                    return cn.Products.Where(_=>_.IsVisible).ToFrozenSet();
+                    return cn.Products.Where(_=>_.IsVisible).Include(_=>_.Category).ToFrozenSet();
 
                 }
                 catch (Exception ex)

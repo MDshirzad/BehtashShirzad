@@ -1,3 +1,69 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+
+<!-- Sidebar -->
+
+
+ @model  IEnumerable<BehtashShirzad.Models.DbModels.User>
+<!-- HTML Structure for the Grid Table -->
+<div class="main-content">
+
+    <header>
+        <li><a href="@Url.Action("Index","Admin")" class="text-white">Dashboard</a></li>
+        <li><a href="@Url.Action("Products","Admin")" class="text-white">Products</a></li>
+        <h2>Admin Panel</h2>
+        <div class="user-wrapper">
+             
+            <div>
+                <h4>Admin Name</h4>
+                <small>admin@example.com</small>
+            </div>
+        </div>
+    </header>
+
+
+    <table class="grid-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Verified</th>
+                <th>Last Ip</th>
+                <th>Last Login successfull</th>
+                <th>Last Login Time</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Example rows with user data -->
+           
+            @{
+                 
+                @foreach(var item in Model){
+                <tr>
+                <td>@item.Username</td>
+                <td>@item.Email</td>
+                <td>@item.PhoneNumber</td>
+                <td>@item.isVerified</td>
+                <td>@item.lastIp</td>
+                <td>@item.isLastLoginSuccessfull</td>
+                <td>@item.lastLoginTime</td>
+
+            </tr>
+                }
+
+            // <td>
+            //     <button class="action-button">Edit</button>
+            //     <button class="action-button">Delete</button>
+            // </td>
+               
+           
+            }
+
+          
+            <!-- Add more rows as needed -->
+        </tbody>
+    </table>
+</div>

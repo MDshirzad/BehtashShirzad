@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BehtashShirzad.Model.Context.DAL;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BehtashShirzad.Controllers.Admin
 {
@@ -11,12 +12,14 @@ namespace BehtashShirzad.Controllers.Admin
 
         public IActionResult Users()
         {
-            return View();
+            var users = UserDAL.GetUsers();
+            return View(users);
         }
 
         public IActionResult Products()
         {
-            return View();
+            var products = ProductDAL.GetProducts();
+            return View(products);
         }
     }
 }

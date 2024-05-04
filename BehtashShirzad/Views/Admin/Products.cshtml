@@ -1,3 +1,60 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+
+
+<div class="main-content">
+
+    <header>
+        <li><a href="@Url.Action("Index","Admin")" class="text-white">Dashboard</a></li>
+        <li><a href="@Url.Action("Users","Admin")" class="text-white">Users</a></li>
+        <h2>Admin Panel</h2>
+        <div class="user-wrapper">
+           
+            <div>
+                <h4>Admin Name</h4>
+                <small>admin@example.com</small>
+            </div>
+        </div>
+    </header>
+
+
+    <table class="grid-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>IsVisible</th>
+                <th>Category</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Example rows with user data -->
+
+            @{
+                @model IEnumerable<BehtashShirzad.Models.DbModels.Product>
+                
+                foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>  <img src="@item.image" width="50px" height="50px" /></td>
+                        <td>@item.Name</td>
+                        <td>@item.Price</td>
+                        <td>@item.Description</td>
+                        <td>@item.IsVisible</td>
+                        <td>@item.Category.Name</td>
+
+                    </tr>
+                }
+            }
+      @*   <td>
+            <button class="action-button">Edit</button>
+            <button class="action-button">Delete</button>
+        </td> *@
+            <!-- Add more rows as needed -->
+        </tbody>
+    </table>
+</div>
