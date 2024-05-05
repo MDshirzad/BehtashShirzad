@@ -10,7 +10,8 @@ namespace BehtashShirzad.Model.ApiModels
         public string Username { get; set; }
         public string Password { get; set; }
         public string? Email { get; set; }
-     
+        [JsonIgnore]
+        public string lastIp { get; set; }
         public string PhoneNumber { get; set; }
 
 

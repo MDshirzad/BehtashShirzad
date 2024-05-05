@@ -20,6 +20,7 @@ using Logger;
 using static SharedObjects.Constants;
 using System.Reflection;
 using Azure.Core;
+using BehtashShirzad.Models.DbModels;
 
 
 namespace BehtashShirzad.Controllers.Authentication
@@ -88,6 +89,7 @@ namespace BehtashShirzad.Controllers.Authentication
         [Route("/Register")]
         public async Task<IActionResult> Register([FromForm] UserRegistrationDto userRegister)
         {
+            userRegister.lastIp = HttpContext.Connection.RemoteIpAddress.ToString();
             Log.CreateLog(new() { LogType = LogType.Info,  Description = RegisterRequestText, Extra = userRegister.ToString() });
 
 
@@ -121,8 +123,9 @@ namespace BehtashShirzad.Controllers.Authentication
                     var otpRes = await CallOtp(new() { To = userRegister.PhoneNumber });
                     if (otpRes == SharedObjects.Constants.Status.SENT)
                     {
-                        return Ok("OtpSent");
-                    }
+						var res = new VerifyNumberDto() { PhoneNumber = userRegister.PhoneNumber };
+						return View("~/Views/LoginSignup/VerifyPhone.cshtml", res);
+					}
                     else if (otpRes == SharedObjects.Constants.Status.NotSent)
                     {
                         return Ok("OtpNotSent");
@@ -165,7 +168,7 @@ namespace BehtashShirzad.Controllers.Authentication
                     if (updateRes)
                     {
 
-                    return Ok("Verified");
+                    return Redirect("/User/Index");
                     }
                     return Problem("NotVerified");
                 }
@@ -211,8 +214,9 @@ namespace BehtashShirzad.Controllers.Authentication
                     switch (otpRes)
                     {
                         case SharedObjects.Constants.Status.SENT:
-                            return Ok("OtpSent");
-                        case SharedObjects.Constants.Status.NotSent:
+						var res = new VerifyNumberDto() { PhoneNumber = user.PhoneNumber };
+						return View("~/Views/LoginSignup/VerifyPhone.cshtml", res);
+					case SharedObjects.Constants.Status.NotSent:
                             return Ok("OtpNotSent");
                         
                         case SharedObjects.Constants.Status.Fail:

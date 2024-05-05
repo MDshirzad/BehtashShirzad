@@ -25,8 +25,8 @@ namespace BehtashShirzad.Controllers.User
 
             return View("~/Views/User/Dashboard.cshtml",invoices );
         }
-       
 
+        [JwtAuthorization("admin")]
         public async Task<string> VerifyUser([FromBody] VerifyUserInAdminModel phone)
         {
 
@@ -38,6 +38,7 @@ namespace BehtashShirzad.Controllers.User
             return "Error";
         }
 
+        [JwtAuthorization("admin")]
         public async Task<string> ChangePassword([FromBody] ChangePasswordUser cred)
         {
 

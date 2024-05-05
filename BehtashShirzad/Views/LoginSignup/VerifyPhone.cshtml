@@ -1,0 +1,11 @@
+﻿@{
+	 
+	@model BehtashShirzad.Models.ApiModels.VerifyNumberDto;
+}
+
+<form asp-action="VerifyByOtp" asp-asp-controller="Authentication" method="post" style="height:100px;">
+	<input name="otp" id="otp" type="text" placeholder="رمز یکبار مصرف" />
+	<input name="phoneNumber" id="phoneNumber" hidden value="@Model.PhoneNumber" />
+	<button class="btn-success"  >تایید</button>
+</form>
+ 

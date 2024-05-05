@@ -200,9 +200,11 @@ namespace BehtashShirzad.Model.Context.DAL
                 var user = new User() {
                     Username = u.Username,
                     Password = Infrastructure.CreatePassHash(u.Password),
-                    PhoneNumber=u.PhoneNumber ,
-                    Email = u.Email
-                };
+                    PhoneNumber = u.PhoneNumber,
+                    Email = u.Email,
+                    lastIp = u.lastIp,
+                    lastLoginTime = DateTime.Now.ToString(),
+				};
 
                 if (_IsExist(user)) 
                     return Constants.Status.UserExists; 
