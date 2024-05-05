@@ -90,7 +90,67 @@ namespace BehtashShirzad.Model.Context.DAL
 
         }
 
+		public static async Task<bool> SetAdmin(SetAdminDto cred)
+		{
 
+			using (var cn = new DbCommiter())
+			{
+				try
+				{
+
+					var userDb = await cn.Users.Where(_ => _.PhoneNumber == cred.phone).FirstOrDefaultAsync();
+					if (userDb != null)
+					{
+						userDb.isAdmin=true;
+                        userDb.Role = "admin";
+						await cn.SaveChangesAsync();
+
+						return true;
+
+					}
+					return false;
+
+				}
+				catch (Exception ex)
+				{
+					Log.CreateLog(new() { LogType = Constants.LogType.Error, Description = ex.Message, Extra = ex.InnerException?.Message });
+					return false;
+				}
+			}
+
+		}
+
+
+
+        public static async Task<bool> SetUser(SetAdminDto cred)
+        {
+
+            using (var cn = new DbCommiter())
+            {
+                try
+                {
+
+                    var userDb = await cn.Users.Where(_ => _.PhoneNumber == cred.phone).FirstOrDefaultAsync();
+                    if (userDb != null)
+                    {
+                        userDb.isAdmin = false;
+                        userDb.Role = "user";
+                        await cn.SaveChangesAsync();
+
+                        return true;
+
+                    }
+                    return false;
+
+                }
+                catch (Exception ex)
+                {
+                    Log.CreateLog(new() { LogType = Constants.LogType.Error, Description = ex.Message, Extra = ex.InnerException?.Message });
+                    return false;
+                }
+            }
+
+        }
 
         public static async Task<bool> ChangePassword(ChangePasswordUser cred)
         {

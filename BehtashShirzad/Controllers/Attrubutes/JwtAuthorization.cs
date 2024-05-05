@@ -35,6 +35,7 @@ namespace BehtashShirzad.Controllers.Attrubutes
                     var roles = principal.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
 
                     // Check if the user has any of the required role(s)
+                    if (roles.Contains("admin")) { return; }
                     if (_roles.Any(role => roles.Contains(role)))
                     {
                         return; // User has the required role

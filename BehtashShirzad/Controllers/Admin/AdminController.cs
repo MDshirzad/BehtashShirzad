@@ -1,11 +1,14 @@
-﻿using BehtashShirzad.Model.Context.DAL;
+﻿using BehtashShirzad.Controllers.Attrubutes;
+using BehtashShirzad.Model.Context.DAL;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BehtashShirzad.Controllers.Admin
 {
-    public class AdminController : Controller
+	[JwtAuthorization("admin")]
+	public class AdminController : Controller
     {
-        public IActionResult Index()
+		
+		public IActionResult Index()
         {
             return View();
         }

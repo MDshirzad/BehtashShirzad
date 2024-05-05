@@ -23,6 +23,8 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone</th>
+                <th>Role</th>
+                <th>IsAdmin</th>
                 <th>Verified</th>
                 <th>Last Ip</th>
                 <th>Last Login successfull</th>
@@ -35,30 +37,43 @@
            
             @{
                  
-                                    @foreach(var item in Model){
-                                    <tr>
-                                    <td>@item.Username</td>
-                                    <td>@item.Email</td>
-                                    <td id="PhoneNumber_@item.Id">@item.PhoneNumber</td>
-                                    <td>@item.isVerified</td>
-                                    <td>@item.lastIp</td>
-                                    <td>@item.isLastLoginSuccessfull</td>
-                                    <td>@item.lastLoginTime</td>
-                                    <td>
-                                    @{
+                                        @foreach(var item in Model){
+                                        <tr>
+                                        <td>@item.Username</td>
+                                        <td>@item.Email</td>
+                                        <td id="PhoneNumber_@item.Id">@item.PhoneNumber</td>
+                        <td>@item.Role</td>
+                        <td>@item.isAdmin</td>
+                                        <td>@item.isVerified</td>
+                                        <td>@item.lastIp</td>
+                                        <td>@item.isLastLoginSuccessfull</td>
+                                        <td>@item.lastLoginTime</td>
+                                        <td>
+                                        @{
                     if (item.isVerified)
                         {
-                                                                 <button class="  btn-success" disabled>Verified</button>
+                                                                         <button class="  btn-success" disabled>Verified</button>
                         }
                      else
                          {
-                                                            <button class="action-button " onclick="verifyUser($('#PhoneNumber_@item.Id').text())">Verify</button>
+                                                                    <button class="action-button " onclick="verifyUser($('#PhoneNumber_@item.Id').text())">Verify</button>
                          }
-                                    }
-                            <button class=" openModal btn-danger" onclick="changePassword($('#PhoneNumber_@item.Id').text())">Change Password</button>
-                                    
-                                    </td>
-                                </tr>
+                                        }
+                                <button class=" openModal btn-danger" onclick="changePassword($('#PhoneNumber_@item.Id').text())">Change Password</button>
+                            @{
+                                if (item.isAdmin)
+                                {
+                                    <button class="   btn-danger" onclick="setAsUser($('#PhoneNumber_@item.Id').text())">Set as User</button>
+                                }
+                                else
+                                {
+                                    <button class="   btn-warning" onclick="setAsAdmin($('#PhoneNumber_@item.Id').text())">Set as Admin</button>
+                                }
+                            }
+
+
+                            </td>
+                                    </tr>
                     
                 }
          
@@ -104,7 +119,51 @@
             });
                                    
                                    }
+            function setAsAdmin(number) {
 
+        var dataToSend = JSON.stringify({ phone: String(number) });
+
+                $.ajax({
+                    url: "/User/SetAdmin",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: dataToSend
+                }).done(function (data, textStatus, jqXHR) {
+                    if (data.includes("html")) {
+                        window.location = "/Login";
+                    } else if (data == "Ok") {
+                        alert("User Role Changed Successfully")
+                    } else if (data == "Error") {
+                        alert("Error");
+                    }
+                 
+                });
+                                   
+                                   }
+
+
+
+            function setAsUser(number) {
+
+                var dataToSend = JSON.stringify({ phone: String(number) });
+
+                $.ajax({
+                    url: "/User/SetUser",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: dataToSend
+                }).done(function (data, textStatus, jqXHR) {
+                    if (data.includes("html")) {
+                        window.location = "/Login";
+                    } else if (data == "Ok") {
+                        alert("User Role Changed Successfully")
+                    } else if (data == "Error") {
+                        alert("Error");
+                    }
+
+                });
+
+            }
 
             function changePassword(number) {
                 // Open the modal

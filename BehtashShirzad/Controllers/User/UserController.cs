@@ -50,6 +50,29 @@ namespace BehtashShirzad.Controllers.User
             return "Error";
         }
 
+		[JwtAuthorization("admin")]
+		public async Task<string> SetAdmin([FromBody] SetAdminDto cred)
+		{
+
+			var res = await UserDAL.SetAdmin(cred);
+			if (res)
+			{
+				return "Ok";
+			}
+			return "Error";
+		}
+
+        [JwtAuthorization("admin")]
+        public async Task<string> SetUser([FromBody] SetAdminDto cred)
+        {
+
+            var res = await UserDAL.SetUser(cred);
+            if (res)
+            {
+                return "Ok";
+            }
+            return "Error";
+        }
 
 
     }
