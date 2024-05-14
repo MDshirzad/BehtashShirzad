@@ -50,7 +50,7 @@ namespace BehtashShirzad.Controllers
         [HttpPost()]
         public async Task<string> Create([FromBody] ProductDto productdt)
         {
-            Log.CreateLog(new() { LogType = Constants.LogType.Error, Description = $"new craete request:category{  productdt.Category }, Name:{productdt.Name},Price:{productdt.Price} Descript:{productdt.Description} , Is visible:{productdt.IsVisible},image :{productdt.Image}  " });
+            Log.CreateLog(new() { LogType = Constants.LogType.Info, Description = $"new craete request:category{  productdt.Category }, Name:{productdt.Name},Price:{productdt.Price} Descript:{productdt.Description} , Is visible:{productdt.IsVisible},image :{productdt.Image}  " });
             if (productdt == null)
             {
                 HttpContext.Response.StatusCode = 400;
