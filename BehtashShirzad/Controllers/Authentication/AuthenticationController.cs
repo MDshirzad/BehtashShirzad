@@ -82,7 +82,7 @@ namespace BehtashShirzad.Controllers.Authentication
            
             }
 
-            return NotFound();
+            return Redirect("/Login");
         }
 
         [HttpPost]
@@ -142,7 +142,26 @@ namespace BehtashShirzad.Controllers.Authentication
            
         }
 
- 
+
+        [HttpGet("/Logout")]
+        public IActionResult Logout()
+        {
+            try
+            {
+              HttpContext.Response.Cookies.Delete("Token");
+               
+            }
+            catch (Exception)
+            {
+
+                
+            }
+       return     Redirect("/Login");
+
+
+
+        }
+
         private async Task<SharedObjects.Constants.Status> CallOtp([FromForm] OtpDto otpDto)
         {
             var service = Provider.GetInstance(SharedObjects.Constants.ApiType.SMS_OTP);

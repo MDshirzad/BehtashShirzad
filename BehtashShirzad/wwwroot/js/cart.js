@@ -131,8 +131,14 @@ function pay() {
         contentType: "application/json",
         data: dataToSend
     }).done(function (data, textStatus, jqXHR) {
+        debugger
+        console.log(textStatus)
+        if ("success" == String(textStatus)) {
+            window.location = "/User"
+        }
         if (data.includes("html")) {
             window.location = "/Login";
         }
+       
     });
 }
