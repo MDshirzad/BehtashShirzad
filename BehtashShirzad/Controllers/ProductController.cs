@@ -1,7 +1,9 @@
 ﻿using BehtashShirzad.Model.ApiModels;
 using BehtashShirzad.Model.Context.DAL;
 using BehtashShirzad.Models.ApiModels;
+using Logger;
 using Microsoft.AspNetCore.Mvc;
+using SharedObjects;
 
 namespace BehtashShirzad.Controllers
 {
@@ -48,7 +50,7 @@ namespace BehtashShirzad.Controllers
         [HttpPost()]
         public async Task<string> Create([FromBody] ProductDto productdt)
         {
-            
+            Log.CreateLog(new() { LogType = Constants.LogType.Error, Description = $"new craete request:category{  productdt.Category }, Name:{productdt.Name},Price:{productdt.Price} Descript:{productdt.Description} , Is visible:{productdt.IsVisible},image :{productdt.Image}  " });
             if (productdt == null)
             {
                 HttpContext.Response.StatusCode = 400;
