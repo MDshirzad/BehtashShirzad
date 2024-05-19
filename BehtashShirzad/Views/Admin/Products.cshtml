@@ -146,8 +146,8 @@
                  
                          var Price = document.getElementById('ProductPrice').value;
                          var category = document.getElementById('ProductCategory').value;
-                var dataToSend = JSON.stringify({ name: Name, description: Description, price: Price, Category: category, image: Image });
-                console.log(checkbox)
+                var dataToSend = JSON.stringify({ name: Name, description: Description, price: Price, Category: category, image: Image, IsVisible: checkbox });
+                console.log(dataToSend)
                  
 
                          $.ajax({
